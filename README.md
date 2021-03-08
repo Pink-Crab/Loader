@@ -1,4 +1,4 @@
-# Registerables
+# Loader
 
 The PinkCrab Hook Loader.
 
@@ -7,8 +7,8 @@ The PinkCrab Hook Loader.
  
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
-![](https://github.com/Pink-Crab/Module__Registerables/workflows/GitHub_CI/badge.svg " ")
-[![codecov](https://codecov.io/gh/Pink-Crab/Module__Registerables/branch/master/graph/badge.svg?token=R3SB4WDL8Z)](https://codecov.io/gh/Pink-Crab/Module__Registerables)
+![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
+[![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=R3SB4WDL8Z)](https://codecov.io/gh/Pink-Crab/Loader)
 
 For more details please visit our docs.
 https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
