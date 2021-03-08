@@ -1,0 +1,5 @@
+vendor
+wordpress
+coverage.xml
+coverage-report
+composer.lock
