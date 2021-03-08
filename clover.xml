@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1615223019">
+  <project timestamp="1615223019">
+    <package name="PinkCrab\Loader">
+      <file name="/shared/httpd/php/htdocs/pc_modules/Loader/src/Hook_Collection.php">
+        <class name="PinkCrab\Loader\Hook_Collection" namespace="PinkCrab\Loader" fullPackage="Hook">
+          <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="8" coveredelements="8"/>
+        </class>
+        <line num="43" type="method" name="push" visibility="public" complexity="1" crap="1" count="9"/>
+        <line num="44" type="stmt" count="9"/>
+        <line num="45" type="stmt" count="9"/>
+        <line num="54" type="method" name="register" visibility="public" complexity="2" crap="2" count="9"/>
+        <line num="55" type="stmt" count="9"/>
+        <line num="56" type="stmt" count="9"/>
+        <line num="57" type="stmt" count="9"/>
+        <line num="59" type="stmt" count="9"/>
+        <metrics loc="60" ncloc="23" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="8" coveredelements="8"/>
+      </file>
+      <file name="/shared/httpd/php/htdocs/pc_modules/Loader/src/Hook_Removal.php">
+        <class name="PinkCrab\Loader\Hook_Removal" namespace="PinkCrab\Loader" fullPackage="Hook">
+          <metrics complexity="23" methods="8" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="39" elements="47" coveredelements="47"/>
+        </class>
+        <line num="60" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="61" type="stmt" count="15"/>
+        <line num="62" type="stmt" count="15"/>
+        <line num="63" type="stmt" count="15"/>
+        <line num="64" type="stmt" count="15"/>
+        <line num="65" type="stmt" count="15"/>
+        <line num="72" type="method" name="remove" visibility="public" complexity="9" crap="9" count="14"/>
+        <line num="73" type="stmt" count="14"/>
+        <line num="74" type="stmt" count="7"/>
+        <line num="77" type="stmt" count="8"/>
+        <line num="79" type="stmt" count="8"/>
+        <line num="81" type="stmt" count="8"/>
+        <line num="82" type="stmt" count="8"/>
+        <line num="83" type="stmt" count="8"/>
+        <line num="84" type="stmt" count="6"/>
+        <line num="85" type="stmt" count="6"/>
+        <line num="89" type="stmt" count="8"/>
+        <line num="90" type="stmt" count="8"/>
+        <line num="91" type="stmt" count="2"/>
+        <line num="92" type="stmt" count="2"/>
+        <line num="97" type="stmt" count="8"/>
+        <line num="106" type="method" name="matching_function_callback" visibility="protected" complexity="2" crap="2" count="2"/>
+        <line num="107" type="stmt" count="2"/>
+        <line num="108" type="stmt" count="2"/>
+        <line num="119" type="method" name="matching_class_callback" visibility="protected" complexity="4" crap="4" count="6"/>
+        <line num="120" type="stmt" count="6"/>
+        <line num="121" type="stmt" count="3"/>
+        <line num="122" type="stmt" count="6"/>
+        <line num="124" type="stmt" count="6"/>
+        <line num="126" type="stmt" count="6"/>
+        <line num="127" type="stmt" count="6"/>
+        <line num="128" type="stmt" count="6"/>
+        <line num="136" type="method" name="registered_hooks" visibility="protected" complexity="1" crap="1" count="8"/>
+        <line num="137" type="stmt" count="8"/>
+        <line num="138" type="stmt" count="8"/>
+        <line num="140" type="stmt" count="8"/>
+        <line num="141" type="stmt" count="8"/>
+        <line num="150" type="method" name="get_callback_as_array" visibility="protected" complexity="3" crap="3" count="7"/>
+        <line num="151" type="stmt" count="7"/>
+        <line num="153" type="stmt" count="1"/>
+        <line num="159" type="stmt" count="6"/>
+        <line num="160" type="stmt" count="6"/>
+        <line num="169" type="method" name="is_callback_closure" visibility="protected" complexity="1" crap="1" count="9"/>
+        <line num="170" type="stmt" count="9"/>
+        <line num="178" type="method" name="has_hook" visibility="protected" complexity="2" crap="2" count="14"/>
+        <line num="179" type="stmt" count="14"/>
+        <line num="180" type="stmt" count="14"/>
+        <metrics loc="182" ncloc="99" classes="1" methods="8" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="39" elements="47" coveredelements="47"/>
+      </file>
+      <file name="/shared/httpd/php/htdocs/pc_modules/Loader/src/Loader.php">
+        <class name="PinkCrab\Loader\Loader" namespace="PinkCrab\Loader">
+          <metrics complexity="29" methods="16" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="131" coveredstatements="131" elements="147" coveredelements="147"/>
+        </class>
+        <line num="85" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="86" type="stmt" count="5"/>
+        <line num="87" type="stmt" count="5"/>
+        <line num="88" type="stmt" count="5"/>
+        <line num="89" type="stmt" count="5"/>
+        <line num="90" type="stmt" count="5"/>
+        <line num="91" type="stmt" count="5"/>
+        <line num="92" type="stmt" count="5"/>
+        <line num="99" type="method" name="boot" visibility="public" complexity="2" crap="2" count="12"/>
+        <line num="100" type="stmt" count="12"/>
+        <line num="101" type="stmt" count="2"/>
+        <line num="103" type="stmt" count="12"/>
+        <line num="115" type="method" name="admin_action" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="116" type="stmt" count="2"/>
+        <line num="118" type="stmt" count="2"/>
+        <line num="119" type="stmt" count="2"/>
+        <line num="120" type="stmt" count="2"/>
+        <line num="121" type="stmt" count="2"/>
+        <line num="122" type="stmt" count="2"/>
+        <line num="126" type="stmt" count="2"/>
+        <line num="137" type="method" name="admin_filter" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="138" type="stmt" count="1"/>
+        <line num="140" type="stmt" count="1"/>
+        <line num="141" type="stmt" count="1"/>
+        <line num="142" type="stmt" count="1"/>
+        <line num="143" type="stmt" count="1"/>
+        <line num="144" type="stmt" count="1"/>
+        <line num="148" type="stmt" count="1"/>
+        <line num="159" type="method" name="front_action" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="160" type="stmt" count="1"/>
+        <line num="162" type="stmt" count="1"/>
+        <line num="163" type="stmt" count="1"/>
+        <line num="164" type="stmt" count="1"/>
+        <line num="165" type="stmt" count="1"/>
+        <line num="166" type="stmt" count="1"/>
+        <line num="170" type="stmt" count="1"/>
+        <line num="181" type="method" name="front_filter" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="182" type="stmt" count="1"/>
+        <line num="184" type="stmt" count="1"/>
+        <line num="185" type="stmt" count="1"/>
+        <line num="186" type="stmt" count="1"/>
+        <line num="187" type="stmt" count="1"/>
+        <line num="188" type="stmt" count="1"/>
+        <line num="192" type="stmt" count="1"/>
+        <line num="203" type="method" name="action" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="204" type="stmt" count="1"/>
+        <line num="206" type="stmt" count="1"/>
+        <line num="207" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="1"/>
+        <line num="209" type="stmt" count="1"/>
+        <line num="210" type="stmt" count="1"/>
+        <line num="214" type="stmt" count="1"/>
+        <line num="225" type="method" name="filter" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="226" type="stmt" count="1"/>
+        <line num="228" type="stmt" count="1"/>
+        <line num="229" type="stmt" count="1"/>
+        <line num="230" type="stmt" count="1"/>
+        <line num="231" type="stmt" count="1"/>
+        <line num="232" type="stmt" count="1"/>
+        <line num="236" type="stmt" count="1"/>
+        <line num="245" type="method" name="shortcode" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="246" type="stmt" count="1"/>
+        <line num="248" type="stmt" count="1"/>
+        <line num="249" type="stmt" count="1"/>
+        <line num="253" type="stmt" count="1"/>
+        <line num="264" type="method" name="ajax" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="265" type="stmt" count="1"/>
+        <line num="267" type="stmt" count="1"/>
+        <line num="268" type="stmt" count="1"/>
+        <line num="269" type="stmt" count="1"/>
+        <line num="270" type="stmt" count="1"/>
+        <line num="274" type="stmt" count="1"/>
+        <line num="284" type="method" name="remove_action" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="285" type="stmt" count="1"/>
+        <line num="287" type="stmt" count="1"/>
+        <line num="288" type="stmt" count="1"/>
+        <line num="289" type="stmt" count="1"/>
+        <line num="290" type="stmt" count="1"/>
+        <line num="295" type="stmt" count="1"/>
+        <line num="305" type="method" name="remove_filter" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="306" type="stmt" count="1"/>
+        <line num="308" type="stmt" count="1"/>
+        <line num="309" type="stmt" count="1"/>
+        <line num="310" type="stmt" count="1"/>
+        <line num="311" type="stmt" count="1"/>
+        <line num="316" type="stmt" count="1"/>
+        <line num="326" type="method" name="remove" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="327" type="stmt" count="1"/>
+        <line num="329" type="stmt" count="1"/>
+        <line num="330" type="stmt" count="1"/>
+        <line num="331" type="stmt" count="1"/>
+        <line num="332" type="stmt" count="1"/>
+        <line num="337" type="stmt" count="1"/>
+        <line num="344" type="method" name="register_hooks" visibility="public" complexity="11" crap="11" count="9"/>
+        <line num="347" type="stmt" count="9"/>
+        <line num="349" type="stmt" count="8"/>
+        <line num="350" type="stmt" count="8"/>
+        <line num="352" type="stmt" count="9"/>
+        <line num="356" type="stmt" count="9"/>
+        <line num="358" type="stmt" count="1"/>
+        <line num="359" type="stmt" count="1"/>
+        <line num="361" type="stmt" count="9"/>
+        <line num="364" type="stmt" count="9"/>
+        <line num="366" type="stmt" count="5"/>
+        <line num="368" type="stmt" count="5"/>
+        <line num="369" type="stmt" count="5"/>
+        <line num="371" type="stmt" count="5"/>
+        <line num="372" type="stmt" count="5"/>
+        <line num="373" type="stmt" count="5"/>
+        <line num="374" type="stmt" count="5"/>
+        <line num="375" type="stmt" count="5"/>
+        <line num="380" type="stmt" count="5"/>
+        <line num="381" type="stmt" count="5"/>
+        <line num="383" type="stmt" count="5"/>
+        <line num="384" type="stmt" count="5"/>
+        <line num="385" type="stmt" count="5"/>
+        <line num="386" type="stmt" count="5"/>
+        <line num="387" type="stmt" count="5"/>
+        <line num="392" type="stmt" count="9"/>
+        <line num="398" type="stmt" count="9"/>
+        <line num="400" type="stmt" count="5"/>
+        <line num="401" type="stmt" count="5"/>
+        <line num="403" type="stmt" count="9"/>
+        <line num="409" type="stmt" count="9"/>
+        <line num="410" type="stmt" count="1"/>
+        <line num="412" type="stmt" count="1"/>
+        <line num="413" type="stmt" count="1"/>
+        <line num="415" type="stmt" count="1"/>
+        <line num="422" type="stmt" count="9"/>
+        <line num="423" type="stmt" count="8"/>
+        <line num="425" type="stmt" count="2"/>
+        <line num="426" type="stmt" count="2"/>
+        <line num="428" type="stmt" count="8"/>
+        <line num="432" type="stmt" count="9"/>
+        <line num="440" type="method" name="register_hook_callback" visibility="private" complexity="3" crap="3" count="6"/>
+        <line num="442" type="stmt" count="6"/>
+        <line num="443" type="stmt" count="6"/>
+        <line num="444" type="stmt" count="6"/>
+        <line num="445" type="stmt" count="6"/>
+        <line num="447" type="stmt" count="4"/>
+        <line num="448" type="stmt" count="4"/>
+        <line num="449" type="stmt" count="4"/>
+        <line num="451" type="stmt" count="6"/>
+        <line num="460" type="method" name="remove_hook_callback" visibility="private" complexity="1" crap="1" count="8"/>
+        <line num="461" type="stmt" count="8"/>
+        <line num="462" type="stmt" count="8"/>
+        <line num="463" type="stmt" count="8"/>
+        <metrics loc="464" ncloc="269" classes="1" methods="16" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="131" coveredstatements="131" elements="147" coveredelements="147"/>
+      </file>
+    </package>
+    <metrics files="3" loc="706" ncloc="391" classes="3" methods="26" coveredmethods="26" conditionals="0" coveredconditionals="0" statements="176" coveredstatements="176" elements="202" coveredelements="202"/>
+  </project>
+</coverage>
