@@ -6,9 +6,10 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
+    executionOrder="random"
     >
     <testsuites>
-        <testsuite name="settings_pages">
+        <testsuite name="loader">
             <directory prefix="Test_" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
