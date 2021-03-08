@@ -54,9 +54,6 @@ jobs:
         env:
           environment_github: true
         run: composer all
-      
-      - name: Test Coverage File Exists
-        run: '(test -f coverage.xml && echo coverage.xml exists)'
 
       - name: Codecov
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.LOADER_CODECOV }}
