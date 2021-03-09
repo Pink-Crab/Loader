@@ -19,13 +19,15 @@ declare(strict_types=1);
  * @since 1.0.0
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Core\Registration
+ * @package PinkCrab\Loader
  */
 
 namespace PinkCrab\Loader;
 
-use PinkCrab\Loader\Hook_Removal;
-use PinkCrab\Loader\Hook_Collection;
+use PinkCrab\Loader\{
+	Hook_Removal,
+	Hook_Collection
+};
 
 class Loader {
 

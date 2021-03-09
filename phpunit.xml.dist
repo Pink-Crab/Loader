@@ -6,9 +6,10 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
+    executionOrder="random"
     >
     <testsuites>
-        <testsuite name="settings_pages">
+        <testsuite name="loader">
             <directory prefix="Test_" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
@@ -24,6 +25,6 @@
     </php>
 
     <logging>
-        <log type="coverage-clover" target="coverage-report/logs/clover.xml"/>
+        <log type="coverage-clover" target="coverage.xml"/>
     </logging>
 </phpunit>

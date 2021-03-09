@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace PinkCrab\Loader\Tests;
 
 use WP_UnitTestCase;
+use InvalidArgumentException;
 use PinkCrab\Loader\Hook_Removal;
 use PinkCrab\PHPUnit_Helpers\Reflection;
 use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Static;
@@ -129,5 +130,76 @@ class Test_Hook_Removal extends WP_UnitTestCase {
 		$callback_as_array = Reflection::invoke_private_method( $hook_remover, 'get_callback_as_array' );
 		$this->assertEmpty( $callback_as_array['class'] );
 		$this->assertEmpty( $callback_as_array['method'] );
+	}
+
+	/**
+	 * Tests just the name of a class whose hook was registered as an instance
+	 * can be removed.
+	 *
+	 * @return void
+	 */
+	public function test_can_use_name_for_instanced_hook() {
+		// Register action.
+		( new Hooks_Via_Instance() )->register_filter();
+
+		$response = ( new Hook_Removal(
+			Hooks_Via_Instance::FILTER_HANDLE,
+			array( Hooks_Via_Instance::class, 'filter_callback_instance' )
+		) )->remove();
+
+		$this->assertTrue( $response );
+		$this->assertEmpty( $GLOBALS['wp_filter'][ Hooks_Via_Instance::FILTER_HANDLE ]->callbacks[10] );
+	}
+
+	/**
+	 * Test throw exception if invalid type passed as callback.
+	 *
+	 * @return void
+	 */
+	public function test_exception_thrown_for_invalid_callback_type() {
+		$this->expectException( InvalidArgumentException::class );
+		new Hook_Removal(
+			Hooks_Via_Instance::FILTER_HANDLE,
+			12.45
+		);
+	}
+
+	/**
+	 * Test throw exception if array with more than 2 elements passed
+	 * This fails the callable test, as filter_callback_instance isnt a static method.
+	 * @return void
+	 */
+	public function test_exception_thrown_for_invalid_callback_array_too_long() {
+		$this->expectException( InvalidArgumentException::class );
+		new Hook_Removal(
+			Hooks_Via_Instance::FILTER_HANDLE,
+			array( Hooks_Via_Instance::class, 'filter_callback_instance', 'too', 'many' )
+		);
+	}
+
+	/**
+	 * Test throw exception if class passed isnt an actual class.
+	 *
+	 * @return void
+	 */
+	public function test_exception_thrown_for_invalid_callback_class() {
+		$this->expectException( InvalidArgumentException::class );
+		new Hook_Removal(
+			Hooks_Via_Instance::FILTER_HANDLE,
+			array( 'Class_Thats_Not', 'function' )
+		);
+	}
+
+	/**
+	 * Test throw exception if class passed isnt an actual method on the class.
+	 *
+	 * @return void
+	 */
+	public function test_exception_thrown_for_invalid_callback_method() {
+		$this->expectException( InvalidArgumentException::class );
+		new Hook_Removal(
+			Hooks_Via_Instance::FILTER_HANDLE,
+			array( Hooks_Via_Instance::class, 'fake_method' )
+		);
 	}
 }
