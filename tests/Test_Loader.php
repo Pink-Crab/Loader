@@ -262,7 +262,7 @@ class Loader_Test extends WP_UnitTestCase {
 			function( $atts ) {
 				echo $atts['text'];
 			}
-		); 
+		);
 
 		$this->register_hooks();
 
