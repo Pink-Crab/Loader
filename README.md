@@ -67,7 +67,7 @@ class SomeAction{
 	 * @return void
 	 */
 	public function hooks(Loader $loader){
-		$loader->action('action_handle', [$this, 'some_method')]);
+		$loader->action('action_handle', [$this, 'some_method')], 20);
 	}
 
 	// The callback
@@ -90,14 +90,17 @@ $loader->register_hooks();
 
 While remove_action() and remove_filter() are prefectly suitable 90% of the time, it can be tricky to unset hooks with have been added as isntance to classes, you can not recall the same instance. Out Hook_Removal class will manually remove all hooks based on the class name (instance or static use). Allowing for the removal of hooks created by other plugins. 
 
-You will need to create an instance of the object to pass to the removal tool. If other plugin developers have hooks loaded on __construct, the removal tool, will remove them.
+Even if the hook was added via a class instance, you only need to use the class name to add the method used. This allows the avoidance of having to recreate an instance of the class and potentially rerunning other hooks and setup routines.
 
 ```php
-$loader->remove('action_handle', [new SomeAction, 'some_method']);
-```
+// The above hook can be removed using
 
-IF HOWEVER creating a new instnace of the class causes side effects, you can use reflection to generate an instance without constructing the class.
-(this may be added to automatically do this at a later date.)
+// Just the full class name (doesnt run autload)
+$loader->remove('action_handle', [SomeAction::class, 'some_method'], 20);
+
+// Or as a new instance
+$loader->remove('action_handle', [new SomeAction(), 'some_method'], 20);
+```
 
 ## Testing ##
 
