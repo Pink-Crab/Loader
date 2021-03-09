@@ -2,7 +2,7 @@
 
 The PinkCrab Hook Loader.
 
-![alt text](https://img.shields.io/badge/Current_Version-1.0.0-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.0.1-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
@@ -13,7 +13,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 ## Version ##
 
-**Release 1.0.0**
+**Release 1.0.1**
 
 ## Why? ##
 
@@ -147,4 +147,5 @@ http://www.opensource.org/licenses/mit-license.html
 
 ## Change Log ##
 
-1.0.0 - Moved from Plugin Core package. Moved the internal collection to there own Object away from PC Collection.
+* 1.0.1 - Added pop() and count() to the hook collection. Not used really from outside, only in tests.
+* 1.0.0 - Moved from Plugin Core package. Moved the internal collection to there own Object away from PC Collection.
