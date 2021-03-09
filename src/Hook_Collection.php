@@ -71,11 +71,11 @@ class Hook_Collection implements Countable {
 	/**
 	 * Pop the last hook registered.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function pop() {
 		if ( $this->count() !== 0 ) {
-			return end( $this->hooks );
+			return array_pop( $this->hooks );
 		}
 		return false;
 	}
