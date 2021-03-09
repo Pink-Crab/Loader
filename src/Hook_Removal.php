@@ -19,13 +19,14 @@ declare(strict_types=1);
  * @since 0.3.6
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
- * @package PinkCrab\Core\Registration
+ * @package PinkCrab\Loader
  */
 
 
 namespace PinkCrab\Loader;
 
 use Closure;
+use InvalidArgumentException;
 
 class Hook_Removal {
 
@@ -39,7 +40,7 @@ class Hook_Removal {
 	/**
 	 * Registered Callback
 	 *
-	 * @var callable|string
+	 * @var callable|array<string, string>
 	 */
 	protected $callback;
 
@@ -57,11 +58,45 @@ class Hook_Removal {
 	 */
 	protected $registered_hooks;
 
-	public function __construct( string $handle, callable $callback, int $priority = 10 ) {
+	/**
+	 * @param string $handle
+	 * @param callable|array<string, string> $callback
+	 * @param int $priority
+	 */
+	public function __construct( string $handle, $callback, int $priority = 10 ) {
+		if ( ! $this->validate_callback( $callback ) ) {
+			throw new InvalidArgumentException( 'Callback must be a valid callable or array<string|object, string> representing a valid callback.' );
+		}
 		$this->handle           = $handle;
 		$this->callback         = $callback;
 		$this->priority         = $priority;
 		$this->registered_hooks = $GLOBALS['wp_filter'];
+	}
+
+	/**
+	 * Validate the callback passed.
+	 *
+	 * @param mixed $callback
+	 * @return bool
+	 */
+	protected function validate_callback( $callback ): bool {
+
+		if ( \is_callable( $callback ) ) {
+				return true;
+		}
+
+		if ( \is_array( $callback ) && \count( $callback ) === 2 ) {
+			$callback = \array_values( $callback );
+
+			// Verify class.
+			if ( \is_object( $callback[0] )
+			&& ( \is_string( $callback[0] ) && \class_exists( $callback[0], false ) )
+			&& \method_exists( $callback[0], $callback[1] )
+			) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -78,15 +113,15 @@ class Hook_Removal {
 
 		foreach ( $this->registered_hooks() as $key => $registered_callback ) {
 			// Is class.
-			if ( is_array( $registered_callback['function'] )
-			&& count( $registered_callback['function'] ) === 2
+			if ( \is_array( $registered_callback['function'] )
+			&& \count( $registered_callback['function'] ) === 2
 			&& $this->matching_class_callback( $registered_callback ) ) {
 				unset( $this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ][ $key ] );
 				$removed = true;
 			}
 
 			// Is global function
-			if ( is_string( $registered_callback['function'] )
+			if ( \is_string( $registered_callback['function'] )
 			&& $this->matching_function_callback( $registered_callback ) ) {
 				unset( $this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ][ $key ] );
 				$removed = true;
@@ -104,8 +139,8 @@ class Hook_Removal {
 	 * @return bool
 	 */
 	protected function matching_function_callback( array $registered_callback ): bool {
-		return is_string( $this->callback )
-			&& strcmp( $registered_callback['function'], $this->callback ) === 0;
+		return \is_string( $this->callback )
+			&& \strcmp( $registered_callback['function'], $this->callback ) === 0;
 	}
 
 	/**
@@ -117,15 +152,15 @@ class Hook_Removal {
 	 * @return bool
 	 */
 	protected function matching_class_callback( array $registered_callback ): bool {
-		$registered_class = is_object( $registered_callback['function'][0] )
-			? get_class( $registered_callback['function'][0] )
+		$registered_class = \is_object( $registered_callback['function'][0] )
+			? \get_class( $registered_callback['function'][0] )
 			: $registered_callback['function'][0];
 
 		$callback_class = $this->get_callback_as_array();
 
-		return class_exists( $callback_class['class'] )
-			&& strcmp( $registered_class, $callback_class['class'] ) === 0
-			&& strcmp( $registered_callback['function'][1], $callback_class['method'] ) === 0;
+		return \class_exists( $callback_class['class'] )
+			&& \strcmp( $registered_class, $callback_class['class'] ) === 0
+			&& \strcmp( $registered_callback['function'][1], $callback_class['method'] ) === 0;
 	}
 
 	/**
@@ -134,10 +169,10 @@ class Hook_Removal {
 	 * @return array<string, array>
 	 */
 	protected function registered_hooks(): array {
-		return array_filter(
+		return \array_filter(
 			$this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ],
 			function( array $callback ) {
-				return array_key_exists( 'function', $callback );
+				return \array_key_exists( 'function', $callback );
 			}
 		);
 	}
@@ -148,7 +183,7 @@ class Hook_Removal {
 	 * @return array<string, string>
 	 */
 	protected function get_callback_as_array(): array {
-		if ( ! is_array( $this->callback ) ) {
+		if ( ! \is_array( $this->callback ) ) {
 			return array(
 				'class'  => '',
 				'method' => '',
@@ -156,7 +191,7 @@ class Hook_Removal {
 		}
 
 		return array(
-			'class'  => is_object( $this->callback[0] ) ? get_class( $this->callback[0] ) : $this->callback[0],
+			'class'  => \is_object( $this->callback[0] ) ? \get_class( $this->callback[0] ) : $this->callback[0],
 			'method' => $this->callback[1],
 		);
 	}
@@ -176,7 +211,7 @@ class Hook_Removal {
 	 * @return bool
 	 */
 	protected function has_hook(): bool {
-		return array_key_exists( $this->handle, $this->registered_hooks )
-			&& array_key_exists( $this->priority, $this->registered_hooks[ $this->handle ]->callbacks );
+		return \array_key_exists( $this->handle, $this->registered_hooks )
+			&& \array_key_exists( $this->priority, $this->registered_hooks[ $this->handle ]->callbacks );
 	}
 }
