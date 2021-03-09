@@ -24,7 +24,9 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-class Hook_Collection {
+use Countable;
+
+class Hook_Collection implements Countable {
 
 	/**
 	 * Holds the hooks.
@@ -55,5 +57,26 @@ class Hook_Collection {
 			$function( $hook );
 			$this->hooks[ $key ]['registered'] = true;
 		}
+	}
+
+	/**
+	 * Get count of hooks registered.
+	 *
+	 * @return int
+	 */
+	public function count(): int {
+		return count( $this->hooks );
+	}
+
+	/**
+	 * Pop the last hook registered.
+	 *
+	 * @return void
+	 */
+	public function pop() {
+		if ( $this->count() !== 0 ) {
+			return end( $this->hooks );
+		}
+		return false;
 	}
 }
