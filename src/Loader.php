@@ -263,7 +263,7 @@ class Loader {
 	 * @param bool $private
 	 * @return void
 	 */
-	public function ajax( string $handle, callable $method, $public = true, $private = true ): void {
+	public function ajax( string $handle, callable $method, bool $public = true, bool $private = true ): void {
 		$this->ajax->push(
 			array(
 				'handle'     => $handle,
