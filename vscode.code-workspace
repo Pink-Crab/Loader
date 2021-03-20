@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"phpcs.enable": true,
+		"phpcs.executablePath": "/usr/bin/phpcs",
+		"phpcs.standard": "WordPress",
+		"phpcbf.executablePath": "/usr/bin/phpcs",
+		"phpcbf.standard": "WordPress"
+	}
+}
