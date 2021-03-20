@@ -107,6 +107,12 @@ class Hook {
 	 * */
 	protected $is_front = true;
 
+	/**
+	 * Denotes if the hook has been registered with WP
+	 * @var bool
+	 */
+	protected $registered = false;
+
 	public function __construct(
 		string $handle,
 		callable $callback,
@@ -332,6 +338,26 @@ class Hook {
 	 */
 	public function front( bool $is_front = true ): self {
 		$this->is_front = $is_front;
+		return $this;
+	}
+
+	/**
+	 * Get denotes if the hook has been registered with WP
+	 *
+	 * @return bool
+	 */
+	public function is_registered(): bool {
+		return $this->registered;
+	}
+
+	/**
+	 * Set denotes if the hook has been registered with WP
+	 *
+	 * @param bool $registered  Denotes if the hook has been registered with WP
+	 * @return self
+	 */
+	public function registered( bool $registered = true ): self {
+		$this->registered = $registered;
 		return $this;
 	}
 }

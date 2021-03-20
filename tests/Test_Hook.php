@@ -132,12 +132,21 @@ class Test_Hook extends TestCase {
 		$this->assertTrue( $hook->is_admin() );
 	}
 
-    /** @testdox Can toggle the hook being called on the backend */
+    /** @testdox Can toggle the hook being called on the frontend */
 	public function test_front_methods(): void {
 		$hook = new Hook( 'foo', 'is_bool' );
 		$hook->front( false );
 		$this->assertFalse( $hook->is_front() );
 		$hook->front();
 		$this->assertTrue( $hook->is_front() );
+	}
+
+    /** @testdox Can toggle if the hook has been registered */
+	public function test_registered_methods(): void {
+		$hook = new Hook( 'foo', 'is_bool' );
+		$hook->registered( false );
+		$this->assertFalse( $hook->is_registered() );
+		$hook->registered();
+		$this->assertTrue( $hook->is_registered() );
 	}
 }
