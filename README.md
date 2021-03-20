@@ -34,10 +34,15 @@ Once you have the hook loader installed it just case of putting it to use. As th
 
 ## Registering Hooks (actions & filters)
 > **Loader::action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+
 > **Loader::admin_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+
 > **Loader::front_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+
 > **Loader::filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
+
 > **Loader::admin_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
+
 > **Loader::front_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
 ```php

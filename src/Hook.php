@@ -1,8 +1,9 @@
 <?php
 
 declare(strict_types=1);
+
 /**
- * The hook loader.
+ * Hook model
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -24,11 +25,52 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-class Hook
-{
+class Hook {
 
-    public const ACTION = 'action';
-    public const FILTER = 'filter';
-    public const AJAX = 'ajax';
-    public const SHORTCODE = 'shortcode';
+	/** @var string */
+	public const ACTION = 'action';
+	/** @var string */
+	public const FILTER = 'filter';
+	/** @var string */
+	public const AJAX = 'ajax';
+	/** @var string */
+	public const SHORTCODE = 'shortcode';
+	/** @var string */
+	public const REMOVE = 'remove';
+
+	/** @var string */
+	protected $type = self::ACTION;
+	/** @var string */
+	protected $handle;
+	/** @var callable */
+	protected $callback;
+	/** @var int */
+	protected $priority = 10;
+	/** @var int */
+	protected $args = 1;
+	/** @var bool */
+	protected $ajax_private = true;
+	/** @var bool */
+	protected $ajax_public = true;
+	/** @var bool */
+	protected $lazy = false;
+	/** @var string|null */
+	protected $deffered_on = null;
+	/** @var bool */
+	protected $is_admin = true;
+	/** @var bool */
+	protected $is_front = true;
+
+	public function __construct(
+		string $handle,
+		callable $callback,
+		int $priority = 10,
+		int $args = 1
+	) {
+		$this->handle   = $handle;
+		$this->callback = $callback;
+		$this->priority = $priority;
+		$this->args     = $args;
+	}
 }
+
