@@ -25,6 +25,11 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-class Hook_Manager{
+class Hook_Factory{
+
+    public function action($handle)
+    {
+        # code...
+    }
 
 }
