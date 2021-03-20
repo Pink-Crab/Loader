@@ -90,10 +90,10 @@ class Hook {
 	protected $lazy = false;
 
 	/**
-	 * If this hook should has its creation deffered to another hook
+	 * If this hook should has its creation deferred to another hook
 	 * @var string|null
 	 * */
-	protected $deffered_on = null;
+	protected $deferred_on = null;
 
 	/**
 	 * Should this hook be loaded if is_admin === true
@@ -271,29 +271,29 @@ class Hook {
 	}
 
 	/**
-	 * Get if this hook should has its creation deffered to another hook
+	 * Get if this hook should has its creation deferred to another hook
 	 * @return string|null
 	 */
-	public function get_deffered_on(): ?string {
-		return $this->deffered_on;
+	public function get_deferred_on(): ?string {
+		return $this->deferred_on;
 	}
 
 	/**
-	 * Checks if the hook is to be deffered
+	 * Checks if the hook is to be deferred
 	 * @return bool
 	 */
-	public function is_deffered(): bool {
-		return $this->deffered_on !== null;
+	public function is_deferred(): bool {
+		return $this->deferred_on !== null;
 	}
 
 	/**
-	 * Set if this hook should has its creation deffered to another hook
+	 * Set if this hook should has its creation deferred to another hook
 	 *
-	 * @param string|null $deffered_on  If this hook should has its creation deffered to another hook
+	 * @param string|null $deferred_on  If this hook should has its creation deferred to another hook
 	 * @return self
 	 */
-	public function deffered_on( $deffered_on ): self {
-		$this->deffered_on = $deffered_on;
+	public function deferred_on( $deferred_on ): self {
+		$this->deferred_on = $deferred_on;
 		return $this;
 	}
 
