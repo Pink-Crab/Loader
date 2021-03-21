@@ -135,4 +135,79 @@ class Hook_Loader
         $this->hooks->push($hook);
         return $hook;
     }
+
+    /**
+     * Adds a remove hook (either action or filter)
+     *
+     * @param string $handle
+     * @param callable|array $callback
+     * @param integer $priority
+     * @return Hook
+     */    
+    public function remove(string $handle, $callback, int $priority = 10): Hook
+    {
+        $hook = $this->hook_factory->remove($handle, $callback, $priority);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
+    /**
+     * Adds a remove action hook
+     * A more verbose alias for Hook_Loader::remove()
+     *
+     * @param string $handle
+     * @param callable|array $callback
+     * @param integer $priority
+     * @return Hook
+     */
+     public function remove_action(string $handle, $callback, int $priority = 10): Hook
+    {
+        return $this->remove($handle, $callback, $priority);
+    }
+
+    /**
+     * Adds a remove filter hook
+     * A more verbose alias for Hook_Loader::remove()
+     *
+     * @param string $handle
+     * @param callable|array $callback
+     * @param integer $priority
+     * @return Hook
+     */
+    public function remove_filter(string $handle, $callback, int $priority = 10): Hook
+    {
+        return $this->remove($handle, $callback, $priority);
+    }
+
+    /**
+     * Adds an ajax hook.
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param boolean $public
+     * @param boolean $private
+     * @return Hook
+     */
+    public function ajax(string $handle, callable $callback, bool $public = true, bool $private = true ): Hook
+    {
+        $hook = $this->hook_factory->ajax($handle, $callback, $public, $private);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
+
+    /**
+     * Add a short code
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @return Hook
+     */
+    public function shortcode(string $handle, callable $callback ): Hook
+    {
+        $hook = $this->hook_factory->shortcode($handle, $callback);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
 }

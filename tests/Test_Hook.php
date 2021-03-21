@@ -116,7 +116,7 @@ class Test_Hook extends TestCase {
 		$hook = new Hook( 'foo', 'is_bool' );
 		$hook->deferred_hook( 'some_hook' );
 		$this->assertEquals( 'some_hook', $hook->get_deferred_on()['handle'] );
-		$this->assertEquals( 10, $hook->get_deferred_on()['proirity'] );
+		$this->assertEquals( 10, $hook->get_deferred_on()['priority'] );
 		$this->assertTrue( $hook->is_deferred() );
 		
         $hook->deferred_hook(null);

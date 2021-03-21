@@ -134,8 +134,8 @@ class Hook_Factory
     public function ajax(
         string $handle,
         callable $callable,
-        bool $private = true,
-        bool $public = true
+        bool $public = true,
+        bool $private = true
     ): Hook {
         $hook = new Hook($handle, $callable);
         $hook->type(Hook::AJAX);

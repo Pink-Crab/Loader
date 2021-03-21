@@ -31,7 +31,7 @@ class Hook_Collection implements Countable {
 	/**
 	 * Holds the hooks.
 	 *
-	 * @var array<int, array>
+	 * @var array<int, Hook>
 	 */
 	protected $hooks = array();
 
@@ -49,13 +49,13 @@ class Hook_Collection implements Countable {
 	/**
 	 * Applies a function to all items in the collection.
 	 *
-	 * @param callable(array<string, mixed>):void $function
+	 * @param callable(Hook):void $function
 	 * @return void
 	 */
 	public function register( callable $function ): void {
 		foreach ( $this->hooks as $key => $hook ) {
 			$function( $hook );
-			$this->hooks[ $key ]['registered'] = true;
+			$this->hooks[ $key ]->registered(true);
 		}
 	}
 
@@ -71,13 +71,13 @@ class Hook_Collection implements Countable {
 	/**
 	 * Pop the last hook registered.
 	 *
-	 * @return mixed
+	 * @return Hook|null
 	 */
-	public function pop() {
+	public function pop(): ?Hook {
 		if ( $this->count() !== 0 ) {
 			return array_pop( $this->hooks );
 		}
-		return false;
+		return null;
 	}
 
 	/**	

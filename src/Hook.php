@@ -56,7 +56,7 @@ class Hook
 
     /**
      * The hooks callback
-     * @var callable
+     * @var callable|array{0:string,1:string}
      * */
     protected $callback;
 
@@ -122,7 +122,7 @@ class Hook
 
     public function __construct(
         string $handle,
-        callable $callback,
+        $callback,
         int $priority = 10,
         int $args = 1
     ) {
@@ -306,7 +306,7 @@ class Hook
     public function get_deferred_on(): ?array
     {
         return $this->deferred_hook !== null
-            ? [ 'handle' => $this->deferred_hook, 'proirity' => $this->deferred_proirity ]
+            ? [ 'handle' => $this->deferred_hook, 'priority' => $this->deferred_proirity ]
             : null;
     }
 
