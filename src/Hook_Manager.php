@@ -22,7 +22,6 @@ declare(strict_types=1);
  * @package PinkCrab\Loader
  */
 
-
 namespace PinkCrab\Loader;
 
 use PinkCrab\Loader\{Hook,Hook_Removal};
@@ -30,6 +29,10 @@ use PinkCrab\Loader\Exceptions\Invalid_Hook_Callback_Exception;
 
 class Hook_Manager {
 
+	/**
+	 * Maps the hook types to the correct registration method.
+	 * @var array<string, string>
+	 */
 	protected const TYPE_MAP = array(
 		Hook::ACTION    => 'register_action',
 		Hook::FILTER    => 'register_filter',
@@ -49,8 +52,9 @@ class Hook_Manager {
 		if ( $this->validate_context( $hook )
 		&& array_key_exists( $hook->get_type(), self::TYPE_MAP )
 		) {
-			$method = self::TYPE_MAP[ $hook->get_type() ];
-			return $this->{$method}( $hook );
+			// Map any deferred hook calls.
+			$hook = $this->map_deferred_hook( $hook );
+			return $this->register_hook( $hook );
 		}
 
 		return $hook;
@@ -73,15 +77,18 @@ class Hook_Manager {
 	protected function map_deferred_hook( Hook $hook ): Hook {
 		if ( $hook->is_deferred() === true
 		&& $hook->get_deferred_on() !== null ) {
+
 			// Construct the deffered hook, populated with currnent hook in callback.
-			$deferred_on   = $hook->get_deferred_on();
+			$deferred_on = $hook->get_deferred_on();
+
 			$deferred_hook = new Hook(
 				$deferred_on['handle'],
 				function ( ...$args ) use ( $hook ) {
-					$this->process_hook( $hook );
+					$this->register_hook( $hook );
 				},
 				$deferred_on['priority']
 			);
+
 			return $deferred_hook;
 		}
 		return $hook;
@@ -96,9 +103,9 @@ class Hook_Manager {
 	protected function validate_context( Hook $hook ): bool {
 		if ( $hook->is_admin() === true && $hook->is_front() === true ) {
 			return true;
-		} elseif ( is_admin() === true && $hook->is_admin() === true ) {
+		} elseif ( \is_admin() === true && $hook->is_admin() === true ) {
 			return true;
-		} elseif ( is_admin() === false && $hook->is_front() === true ) {
+		} elseif ( \is_admin() === false && $hook->is_front() === true ) {
 			return true;
 		}
 		return false;
@@ -122,6 +129,12 @@ class Hook_Manager {
 				return \call_user_func_array( $hook->get_callback(), $args );
 			}
 			: $hook->get_callback();
+	}
+
+	protected function register_hook( Hook $hook ): Hook {
+		// Pass to corret handler.
+		$method = self::TYPE_MAP[ $hook->get_type() ];
+		return $this->{$method}( $hook );
 	}
 
 	/**
