@@ -38,11 +38,11 @@ class Hook_Collection implements Countable {
 	/**
 	 * Pushes an item to the collection.
 	 *
-	 * @param array<string, mixed> $data
+	 * @param Hook $hook
 	 * @return self
 	 */
-	public function push( array $data ): self {
-		$this->hooks[] = $data;
+	public function push( Hook $hook ): self {
+		$this->hooks[] = $hook;
 		return $this;
 	}
 
@@ -78,5 +78,15 @@ class Hook_Collection implements Countable {
 			return array_pop( $this->hooks );
 		}
 		return false;
+	}
+
+	/**	
+	 * Exports the internal hook array, as an array.
+	 * 
+	 * @return Hook[]
+	 */
+	public function export(): array
+	{
+		return $this->hooks;
 	}
 }

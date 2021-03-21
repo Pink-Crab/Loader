@@ -16,10 +16,9 @@ namespace PinkCrab\Loader\Tests;
 use WP_UnitTestCase;
 use InvalidArgumentException;
 use PinkCrab\Loader\Hook_Removal;
-use PinkCrab\PHPUnit_Helpers\Reflection;
+use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Static;
 use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Instance;
-use PinkCrab\PHPUnit_Helpers\Objects;
 
 class Test_Hook_Removal extends WP_UnitTestCase {
 
@@ -129,7 +128,7 @@ class Test_Hook_Removal extends WP_UnitTestCase {
 		// Mock a none valid class.
 		Objects::set_property($hook_remover, 'callback', 'NOT ARRAY');
 		// Reflection::set_private_property( $hook_remover, 'callback', 'NOT ARRAY' );
-		$callback_as_array = Reflection::invoke_private_method( $hook_remover, 'get_callback_as_array' );
+		$callback_as_array = Objects::invoke_method( $hook_remover, 'get_callback_as_array' );
 		$this->assertEmpty( $callback_as_array['class'] );
 		$this->assertEmpty( $callback_as_array['method'] );
 	}
