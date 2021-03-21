@@ -86,7 +86,7 @@ class Hook_Factory
      * Removes a hook
      *
      * @param string $handle
-     * @param callable|array $callable
+     * @param callable|array<string, string> $callable
      * @param integer $priroty
      * @param boolean $is_admin
      * @param boolean $is_public
