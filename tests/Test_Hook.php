@@ -114,11 +114,12 @@ class Test_Hook extends TestCase {
     /** @testdox Can set and check if a hook is deferred and reacall its hook (if set)*/
 	public function test_lazy_deferred(): void {
 		$hook = new Hook( 'foo', 'is_bool' );
-		$hook->deferred_on( 'some_hook' );
-		$this->assertEquals( 'some_hook', $hook->get_deferred_on() );
+		$hook->deferred_hook( 'some_hook' );
+		$this->assertEquals( 'some_hook', $hook->get_deferred_on()['handle'] );
+		$this->assertEquals( 10, $hook->get_deferred_on()['proirity'] );
 		$this->assertTrue( $hook->is_deferred() );
 		
-        $hook->deferred_on(null);
+        $hook->deferred_hook(null);
 		$this->assertFalse( $hook->is_deferred() );
 		$this->assertNull( $hook->get_deferred_on() );
 	}

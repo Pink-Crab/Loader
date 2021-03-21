@@ -25,11 +25,122 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-class Hook_Factory{
+use PinkCrab\Loader\Hook;
 
-    public function action($handle)
-    {
-        # code...
+class Hook_Factory
+{
+
+    /**
+     * Creates an action.
+     *
+     * @param string $handle
+     * @param callable $callable
+     * @param integer $args
+     * @param integer $priroty
+     * @param boolean $is_admin
+     * @param boolean $is_public
+     * @return Hook
+     */
+    public function action(
+        string $handle,
+        callable $callable,
+        int $args = 1,
+        int $priroty = 10,
+        bool $is_admin = true,
+        bool $is_public = true
+    ): Hook {
+        $hook = new Hook($handle, $callable, $priroty, $args);
+        $hook->type(Hook::ACTION);
+        $hook->admin($is_admin);
+        $hook->front($is_public);
+        return $hook;
     }
 
+    /**
+     * Creates a filter.
+     *
+     * @param string $handle
+     * @param callable $callable
+     * @param integer $args
+     * @param integer $priroty
+     * @param boolean $is_admin
+     * @param boolean $is_public
+     * @return Hook
+     */
+    public function filter(
+        string $handle,
+        callable $callable,
+        int $args = 1,
+        int $priroty = 10,
+        bool $is_admin = true,
+        bool $is_public = true
+    ): Hook {
+        $hook = new Hook($handle, $callable, $priroty, $args);
+        $hook->type(Hook::FILTER);
+        $hook->admin($is_admin);
+        $hook->front($is_public);
+        return $hook;
+    }
+
+    /**
+     * Removes a hook
+     *
+     * @param string $handle
+     * @param callable|array $callable
+     * @param integer $priroty
+     * @param boolean $is_admin
+     * @param boolean $is_public
+     * @return Hook
+     */
+    public function remove(
+        string $handle,
+        $callable,
+        int $priroty = 10,
+        bool $is_admin = true,
+        bool $is_public = true
+    ): Hook {
+        $hook = new Hook($handle, $callable, $priroty);
+        $hook->type(Hook::REMOVE);
+        $hook->admin($is_admin);
+        $hook->front($is_public);
+        return $hook;
+    }
+
+    /**
+     * Creates a shortcode.
+     *
+     * @param string $handle
+     * @param callable $callable
+     * @return Hook
+     */
+    public function shortcode(
+        string $handle,
+        callable $callable
+    ): Hook {
+        $hook = new Hook($handle, $callable);
+        $hook->type(Hook::SHORTCODE);
+        return $hook;
+    }
+
+    /**
+     * Creates a shortcode.
+     *
+     * @param string $handle
+     * @param callable $callable
+     * @param boolean $private
+     * @param boolean $public
+     * @return Hook
+     */
+    public function ajax(
+        string $handle,
+        callable $callable,
+        bool $private = true,
+        bool $public = true
+    ): Hook {
+        $hook = new Hook($handle, $callable);
+        $hook->type(Hook::AJAX);
+        $hook->ajax_private($private);
+        $hook->ajax_public($public);
+        return $hook;
+    }
 }
