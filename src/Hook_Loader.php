@@ -40,6 +40,15 @@ class Hook_Loader
         $this->hooks = new Hook_Collection;
     }
 
+    /**
+     * Adds an action hook globally
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */    
     public function action(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
     {
         $hook = $this->hook_factory->action($handle, $callback, $args, $priority);
@@ -47,6 +56,15 @@ class Hook_Loader
         return $hook;
     }
 
+    /**
+     * Adds an admin only action
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */
     public function admin_action(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
     {
         $hook = $this->hook_factory->action($handle, $callback, $args, $priority, true, false);
@@ -54,9 +72,66 @@ class Hook_Loader
         return $hook;
     }
 
+    /**
+     * Adds a frontend only action
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */
     public function front_action(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
     {
         $hook = $this->hook_factory->action($handle, $callback, $args, $priority, false, true);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
+    /**
+     * Adds an filter hook globally
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */    
+    public function filter(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
+    {
+        $hook = $this->hook_factory->filter($handle, $callback, $args, $priority);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
+    /**
+     * Adds an admin only filter
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */
+    public function admin_filter(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
+    {
+        $hook = $this->hook_factory->filter($handle, $callback, $args, $priority, true, false);
+        $this->hooks->push($hook);
+        return $hook;
+    }
+
+    /**
+     * Adds a frontend only filter
+     *
+     * @param string $handle
+     * @param callable $callback
+     * @param integer $args
+     * @param integer $priority
+     * @return Hook
+     */
+    public function front_filter(string $handle, callable $callback, int $args = 1, int $priority = 10): Hook
+    {
+        $hook = $this->hook_factory->filter($handle, $callback, $args, $priority, false, true);
         $this->hooks->push($hook);
         return $hook;
     }

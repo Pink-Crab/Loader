@@ -22,10 +22,6 @@
             "PinkCrab\\Loader\\Tests\\": "tests/"
         }
     },
-    "repositories": [{
-        "url": "https://github.com/Pink-Crab/PHP_Unit_Helpers.git",
-        "type": "git"
-    }],
     "require-dev": {
         "phpunit/phpunit": "^7.0",
         "roots/wordpress": "^5.5",
@@ -36,9 +32,9 @@
         "php-stubs/wordpress-stubs": "^5.6.0",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
-        "object-calisthenics/phpcs-calisthenics-rules": "*",
-        "pinkcrab/phpunit-helpers": "dev-master",
-        "yoast/phpunit-polyfills": "^0.2.0"
+        "object-calisthenics/phpcs-calisthenics-rules": "3.8.0",
+        "yoast/phpunit-polyfills": "^0.2.0",
+        "gin0115/wpunit-helpers": "^1.0"
     },
     "require": {
         "php": ">=7.1.0"
@@ -49,5 +45,6 @@
         "analyse": "vendor/bin/phpstan analyse src -l8",
         "sniff": "./vendor/bin/phpcs src/ -v",
         "all": "composer coverage && composer analyse && composer sniff"
-    }
+    },
+    "minimum-stability": "dev"
 }
