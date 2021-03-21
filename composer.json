@@ -34,17 +34,16 @@
         "wp-coding-standards/wpcs": "*",
         "object-calisthenics/phpcs-calisthenics-rules": "3.8.0",
         "yoast/phpunit-polyfills": "^0.2.0",
-        "gin0115/wpunit-helpers": "dev-main"
+        "gin0115/wpunit-helpers": "^1.0"
     },
     "require": {
         "php": ">=7.1.0"
     },
     "scripts": {
-        "test": "phpunit --coverage-clover clover.xml",
-        "coverage": "phpunit --coverage-html coverage-report",
+        "test": "vendor/bin/phpunit --colors=always --testdox --coverage-clover clover.xml",
+        "coverage": "vendor/bin/phpunit --colors=always --testdox --coverage-html coverage-report",
         "analyse": "vendor/bin/phpstan analyse src -l8",
         "sniff": "./vendor/bin/phpcs src/ -v",
         "all": "composer coverage && composer analyse && composer sniff"
-    },
-    "minimum-stability": "dev"
+    }
 }

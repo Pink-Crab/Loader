@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace PinkCrab\Loader\Tests;
 
 use WP_UnitTestCase;
-use PinkCrab\Loader\Hook;
-use PinkCrab\Loader\Hook_Factory;
+use PinkCrab\Loader\{Hook,Hook_Factory};
 use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Static;
 
 class Test_Hook_Factory extends WP_UnitTestCase
@@ -111,21 +110,9 @@ class Test_Hook_Factory extends WP_UnitTestCase
         $this->assertTrue($hook->is_admin());
         $this->assertTrue($hook->is_front());
     }
-    /** @testdox A hook can be created by passing in the handle, callback, args, priority and its loading preference for admin and front */
+    /** @testdox When called the factory should return a Remove Hook, Hook which can be used for front and or admin hooks. */
     public function test_create_removal_hook_for_front_and_admin()
     {
-        $admin = $this->hook_factory->remove('init', 'is_string', 1, true, false);
-        $this->assertTrue($admin->is_admin());
-        $this->assertFalse($admin->is_front());
-
-        $front = $this->hook_factory->remove('init', 'is_callable', 1, false, true);
-        $this->assertFalse($front->is_admin());
-        $this->assertTrue($front->is_front());
-
-        $global = $this->hook_factory->remove('init', 'is_int', 1, true, true);
-        $this->assertTrue($global->is_admin());
-        $this->assertTrue($global->is_front());
-
         $default = $this->hook_factory->remove('init', 'is_int', 1);
         $this->assertTrue($default->is_admin());
         $this->assertTrue($default->is_front());
@@ -146,14 +133,12 @@ class Test_Hook_Factory extends WP_UnitTestCase
             'some_action',
             array(Hooks_Via_Static::class, 'filter_callback_static'),
             50,
-            true,
-            false
         );
         $this->assertEquals(Hook::REMOVE, $hook->get_type());
         $this->assertEquals('some_action', $hook->get_handle());
         $this->assertEquals(array(Hooks_Via_Static::class, 'filter_callback_static'), $hook->get_callback());
         $this->assertEquals(50, $hook->get_priority());
         $this->assertTrue($hook->is_admin());
-        $this->assertFalse($hook->is_front());
+        $this->assertTrue($hook->is_front());
     }
 }
