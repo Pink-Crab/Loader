@@ -14,37 +14,34 @@ declare(strict_types=1);
 namespace PinkCrab\Loader\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PinkCrab\Loader\Hook_Collection;
+use PinkCrab\Loader\{Hook,Hook_Collection};
 
 class Test_Hook_Collection extends TestCase {
 
+	/** @testdox When a Hook is pushed to a Hook_Collection is should be included in the collected */
 	public function test_push(): void {
 		$collection = new Hook_Collection;
-		$collection->push( array( 'some data' ) );
+		$collection->push( new Hook('action', 'is_string') );
 		$this->assertCount( 1, $collection );
 	}
 
+	/** @testdox When being registered, the functionality will be applied to all Hooks */
 	public function test_can_register_hooks(): void {
 		$collection = new Hook_Collection;
-		$collection->push(
-			array(
-				'string'     => 'some output',
-				'registered' => false,
-			)
-		);
+		$collection->push(new Hook('action', 'is_string'));
 
-		$this->expectOutputString( 'some output' );
+		$this->expectOutputString( 'action' );
 		$collection->register(
 			function( $hook ) {
-				print( $hook['string'] );
+				print( $hook->get_handle() );
 			}
 		);
 	}
 
+	/** @testdox Hooks added to the collection can be removed one at a time as they were added */
 	public function test_can_pop_hook_from_collection(): void {
-		$data       = array( 'data' );
+		$data       = new Hook('action', 'is_string');
 		$collection = new Hook_Collection;
-		$collection->push( array( 'some data' ) );
 		$collection->push( $data );
 
 		$this->assertSame( $data, $collection->pop() );

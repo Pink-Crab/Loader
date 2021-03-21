@@ -25,37 +25,38 @@ declare(strict_types=1);
 namespace PinkCrab\Loader;
 
 use Countable;
+use PinkCrab\Loader\Hook;
 
 class Hook_Collection implements Countable {
 
 	/**
 	 * Holds the hooks.
 	 *
-	 * @var array<int, array>
+	 * @var Hook[]
 	 */
 	protected $hooks = array();
 
 	/**
 	 * Pushes an item to the collection.
 	 *
-	 * @param array<string, mixed> $data
+	 * @param Hook $hook
 	 * @return self
 	 */
-	public function push( array $data ): self {
-		$this->hooks[] = $data;
+	public function push( Hook $hook ): self {
+		$this->hooks[] = $hook;
 		return $this;
 	}
 
 	/**
 	 * Applies a function to all items in the collection.
 	 *
-	 * @param callable(array<string, mixed>):void $function
+	 * @param callable(Hook):void $function
 	 * @return void
 	 */
 	public function register( callable $function ): void {
 		foreach ( $this->hooks as $key => $hook ) {
 			$function( $hook );
-			$this->hooks[ $key ]['registered'] = true;
+			$this->hooks[ $key ]->registered( true );
 		}
 	}
 
@@ -71,12 +72,22 @@ class Hook_Collection implements Countable {
 	/**
 	 * Pop the last hook registered.
 	 *
-	 * @return mixed
+	 * @return Hook|null
 	 */
-	public function pop() {
+	public function pop(): ?Hook {
 		if ( $this->count() !== 0 ) {
 			return array_pop( $this->hooks );
 		}
-		return false;
+		return null;
+	}
+
+	/**
+	 * Exports the internal hook array, as an array.
+	 *
+	 * @since 1.1.0
+	 * @return Hook[]
+	 */
+	public function export(): array {
+		return $this->hooks;
 	}
 }

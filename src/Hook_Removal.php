@@ -40,7 +40,7 @@ class Hook_Removal {
 	/**
 	 * Registered Callback
 	 *
-	 * @var callable|array<string, string>
+	 * @var callable|array{0:string,1:string}
 	 */
 	protected $callback;
 
@@ -60,7 +60,7 @@ class Hook_Removal {
 
 	/**
 	 * @param string $handle
-	 * @param callable|array<string, string> $callback
+	 * @param callable|array{0:string,1:string} $callback
 	 * @param int $priority
 	 */
 	public function __construct( string $handle, $callback, int $priority = 10 ) {

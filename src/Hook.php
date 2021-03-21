@@ -27,6 +27,7 @@ namespace PinkCrab\Loader;
 
 class Hook {
 
+
 	/**  Hook type constants. */
 
 	/** @var string */
@@ -55,7 +56,7 @@ class Hook {
 
 	/**
 	 * The hooks callback
-	 * @var callable
+	 * @var callable|array{0:string,1:string}
 	 * */
 	protected $callback;
 
@@ -93,7 +94,13 @@ class Hook {
 	 * If this hook should has its creation deferred to another hook
 	 * @var string|null
 	 * */
-	protected $deferred_on = null;
+	protected $deferred_hook = null;
+
+	/**
+	 * Deferred hook priority
+	 * @var int
+	 * */
+	protected $deferred_proirity = 10;
 
 	/**
 	 * Should this hook be loaded if is_admin === true
@@ -107,9 +114,21 @@ class Hook {
 	 * */
 	protected $is_front = true;
 
-	public function __construct(
+	/**
+	 * Denotes if the hook has been registered with WP
+	 * @var bool
+	 */
+	protected $registered = false;
+
+	/**
+     * @param string $handle
+     * @param callable|array{0:string,1:string} $callback
+     * @param int $priority
+     * @param int $args
+     */
+    public function __construct(
 		string $handle,
-		callable $callback,
+		$callback,
 		int $priority = 10,
 		int $args = 1
 	) {
@@ -158,9 +177,9 @@ class Hook {
 
 	/**
 	 * Get the hooks callback
-	 * @return callable
+	 * @return callable|array{0:string, 1:string}
 	 */
-	public function get_callback(): callable {
+	public function get_callback() {
 		return $this->callback;
 	}
 
@@ -272,10 +291,15 @@ class Hook {
 
 	/**
 	 * Get if this hook should has its creation deferred to another hook
-	 * @return string|null
+	 * @return array{handle:string,priority:int}|null
 	 */
-	public function get_deferred_on(): ?string {
-		return $this->deferred_on;
+	public function get_deferred_on(): ?array {
+		return $this->deferred_hook !== null
+			? array(
+				'handle'   => $this->deferred_hook,
+				'priority' => $this->deferred_proirity,
+			)
+			: null;
 	}
 
 	/**
@@ -283,17 +307,28 @@ class Hook {
 	 * @return bool
 	 */
 	public function is_deferred(): bool {
-		return $this->deferred_on !== null;
+		return $this->deferred_hook !== null;
 	}
 
 	/**
-	 * Set if this hook should has its creation deferred to another hook
+	 * Sets the hook to deffer the call.
 	 *
-	 * @param string|null $deferred_on  If this hook should has its creation deferred to another hook
+	 * @param string|null $deferred_hook
 	 * @return self
 	 */
-	public function deferred_on( $deferred_on ): self {
-		$this->deferred_on = $deferred_on;
+	public function deferred_hook( ?string $deferred_hook ): self {
+		$this->deferred_hook = $deferred_hook;
+		return $this;
+	}
+
+	/**
+	 * Sets the proirity of the deferred hook.
+	 *
+	 * @param int $deferred_proirity
+	 * @return self
+	 */
+	public function deferred_proirity( int $deferred_proirity ): self {
+		$this->deferred_proirity = $deferred_proirity;
 		return $this;
 	}
 
@@ -334,5 +369,24 @@ class Hook {
 		$this->is_front = $is_front;
 		return $this;
 	}
-}
 
+	/**
+	 * Get denotes if the hook has been registered with WP
+	 *
+	 * @return bool
+	 */
+	public function is_registered(): bool {
+		return $this->registered;
+	}
+
+	/**
+	 * Set denotes if the hook has been registered with WP
+	 *
+	 * @param bool $registered  Denotes if the hook has been registered with WP
+	 * @return self
+	 */
+	public function registered( bool $registered = true ): self {
+		$this->registered = $registered;
+		return $this;
+	}
+}
