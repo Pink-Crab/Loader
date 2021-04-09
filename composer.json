@@ -32,7 +32,7 @@
         "php-stubs/wordpress-stubs": "^5.6.0",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
-        "object-calisthenics/phpcs-calisthenics-rules": "3.8.0",
+        "object-calisthenics/phpcs-calisthenics-rules": "*",
         "yoast/phpunit-polyfills": "^0.2.0",
         "gin0115/wpunit-helpers": "^1.0"
     },
