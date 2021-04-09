@@ -102,28 +102,6 @@ class Test_Hook extends TestCase {
 		$this->assertTrue( $hook->is_ajax_public() );
 	}
 
-    /** @testdox Can set and check if a hook is lazy */
-	public function test_lazy_methods(): void {
-		$hook = new Hook( 'foo', 'is_bool' );
-		$hook->lazy( false );
-		$this->assertFalse( $hook->is_lazy() );
-		$hook->lazy();
-		$this->assertTrue( $hook->is_lazy() );
-	}
-
-    /** @testdox Can set and check if a hook is deferred and reacall its hook (if set)*/
-	public function test_lazy_deferred(): void {
-		$hook = new Hook( 'foo', 'is_bool' );
-		$hook->deferred_hook( 'some_hook' );
-		$this->assertEquals( 'some_hook', $hook->get_deferred_on()['handle'] );
-		$this->assertEquals( 10, $hook->get_deferred_on()['priority'] );
-		$this->assertTrue( $hook->is_deferred() );
-		
-        $hook->deferred_hook(null);
-		$this->assertFalse( $hook->is_deferred() );
-		$this->assertNull( $hook->get_deferred_on() );
-	}
-
     /** @testdox Can toggle the hook being called on the backend */
 	public function test_admin_methods(): void {
 		$hook = new Hook( 'foo', 'is_bool' );

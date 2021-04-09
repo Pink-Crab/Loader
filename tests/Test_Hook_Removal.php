@@ -17,8 +17,7 @@ use WP_UnitTestCase;
 use InvalidArgumentException;
 use PinkCrab\Loader\Hook_Removal;
 use Gin0115\WPUnit_Helpers\Objects;
-use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Static;
-use PinkCrab\Loader\Tests\Fixtures\Hooks_Via_Instance;
+use PinkCrab\Loader\Tests\Fixtures\{Hooks_Via_Static,Hooks_Via_Instance};
 
 class Test_Hook_Removal extends WP_UnitTestCase {
 
@@ -111,7 +110,7 @@ class Test_Hook_Removal extends WP_UnitTestCase {
 		$hook_remover = new Hook_Removal( 'fake_handle', array( new Hooks_Via_Instance(), 'action_callback_instance' ) );
 
 		// Mock a none valid class.
-		Objects::set_property($hook_remover, 'callback', 'NOT ARRAY');
+		Objects::set_property( $hook_remover, 'callback', 'NOT ARRAY' );
 		$callback_as_array = Objects::invoke_method( $hook_remover, 'get_callback_as_array' );
 		$this->assertEmpty( $callback_as_array['class'] );
 		$this->assertEmpty( $callback_as_array['method'] );
