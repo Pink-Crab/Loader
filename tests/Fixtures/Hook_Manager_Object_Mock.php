@@ -83,7 +83,7 @@ class Hook_Manager_Object_Mock extends Hook_Manager {
 	 */
 	protected function register_filter( Hook $hook ): Hook {
 		$this->_add_filter( $hook->get_handle(), $hook->get_callback(), $hook->get_priority(), $hook->args_count() );
-        $hook->registered();
+		$hook->registered();
 		return $hook;
 	}
 
@@ -95,7 +95,7 @@ class Hook_Manager_Object_Mock extends Hook_Manager {
 	 */
 	protected function register_remove( Hook $hook ): Hook {
 		$this->_remove_hook( $hook->get_handle(), $hook->get_callback(), $hook->get_priority() );
-        $hook->registered();
+		$hook->registered();
 		return $hook;
 	}
 

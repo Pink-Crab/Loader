@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
+use InvalidArgumentException;
 use PinkCrab\Loader\{Hook,Hook_Removal};
 use PinkCrab\Loader\Exceptions\Invalid_Hook_Callback_Exception;
 
@@ -37,7 +38,7 @@ class Hook_Manager {
 		Hook::ACTION    => 'register_action',
 		Hook::FILTER    => 'register_filter',
 		Hook::AJAX      => 'register_ajax',
-		Hook::SHORTCODE => 'register_shortocde',
+		Hook::SHORTCODE => 'register_shortcode',
 		Hook::REMOVE    => 'register_remove',
 	);
 
@@ -52,45 +53,9 @@ class Hook_Manager {
 		if ( $this->validate_context( $hook )
 		&& array_key_exists( $hook->get_type(), self::TYPE_MAP )
 		) {
-			// Map any deferred hook calls.
-			$hook = $this->map_deferred_hook( $hook );
 			return $this->register_hook( $hook );
 		}
 
-		return $hook;
-	}
-
-	/**
-	 * Maps the hook as the parent if deferred.
-	 * If deferred uses the current hook, to populate a second callback
-	 * which is added via the deferred ones callback.
-	 *
-	 * Example
-	 *
-	 * add_action('deferred_hook', function(...$args) {
-	 *     add_action('actual_hook', 'actual_callback'...);
-	 * });
-	 *
-	 * @param Hook $hook
-	 * @return Hook
-	 */
-	protected function map_deferred_hook( Hook $hook ): Hook {
-		if ( $hook->is_deferred() === true
-		&& $hook->get_deferred_on() !== null ) {
-
-			// Construct the deffered hook, populated with currnent hook in callback.
-			$deferred_on = $hook->get_deferred_on();
-
-			$deferred_hook = new Hook(
-				$deferred_on['handle'],
-				function ( ...$args ) use ( $hook ) {
-					$this->register_hook( $hook );
-				},
-				$deferred_on['priority']
-			);
-
-			return $deferred_hook;
-		}
 		return $hook;
 	}
 
@@ -111,26 +76,6 @@ class Hook_Manager {
 		return false;
 	}
 
-	/**
-	 * Wraps the callback for all lazy calls, else just the passed
-	 * callback.
-	 *
-	 * @param Hook $hook
-	 * @return callable
-	 * @throws Invalid_Hook_Callback_Exception
-	 */
-	protected function maybe_lazy_callback( Hook $hook ): callable {
-		if ( ! \is_callable( $hook->get_callback() ) ) {
-			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
-		}
-
-		return $hook->is_lazy() === true
-			? function( ...$args ) use ( $hook ) {
-				return \call_user_func_array( $hook->get_callback(), $args );
-			}
-			: $hook->get_callback();
-	}
-
 	protected function register_hook( Hook $hook ): Hook {
 		// Pass to corret handler.
 		$method = self::TYPE_MAP[ $hook->get_type() ];
@@ -145,11 +90,11 @@ class Hook_Manager {
 	 * @throws Invalid_Hook_Callback_Exception
 	 */
 	protected function register_action( Hook $hook ): Hook {
-		if ( \is_callable( $hook->get_callback() ) ) {
+		if ( ! \is_callable( $hook->get_callback() ) ) {
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
-		add_action( $hook->get_handle(), $this->maybe_lazy_callback( $hook ), $hook->get_priority(), $hook->args_count() );
+		add_action( $hook->get_handle(), $hook->get_callback(), $hook->get_priority(), $hook->args_count() );
 		$hook->registered();
 		return $hook;
 	}
@@ -162,11 +107,11 @@ class Hook_Manager {
 	 * @throws Invalid_Hook_Callback_Exception
 	 */
 	protected function register_filter( Hook $hook ): Hook {
-		if ( \is_callable( $hook->get_callback() ) ) {
+		if ( ! \is_callable( $hook->get_callback() ) ) {
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
-		add_filter( $hook->get_handle(), $this->maybe_lazy_callback( $hook ), $hook->get_priority(), $hook->args_count() );
+		add_filter( $hook->get_handle(), $hook->get_callback(), $hook->get_priority(), $hook->args_count() );
 		$hook->registered();
 		return $hook;
 	}
@@ -179,11 +124,15 @@ class Hook_Manager {
 	 */
 	protected function register_remove( Hook $hook ): Hook {
 		// Remove the hook.
-		( new Hook_Removal(
-			$hook->get_handle(),
-			$hook->get_callback(),
-			$hook->get_priority()
-		) )->remove();
+		try {
+			( new Hook_Removal(
+				$hook->get_handle(),
+				$hook->get_callback(),
+				$hook->get_priority()
+			) )->remove();
+		} catch ( InvalidArgumentException $th ) {
+			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
+		}
 
 		$hook->registered();
 		return $hook;
@@ -197,9 +146,22 @@ class Hook_Manager {
 	 * @throws Invalid_Hook_Callback_Exception
 	 */
 	protected function register_ajax( Hook $hook ): Hook {
-		if ( \is_callable( $hook->get_callback() ) ) {
+		if ( ! \is_callable( $hook->get_callback() ) ) {
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
+
+		// Public Ajax
+		if ( $hook->is_ajax_public() ) {
+			add_action( 'wp_ajax_nopriv_' . $hook->get_handle(), $hook->get_callback() );
+		}
+
+		// Private Ajax
+		if ( $hook->is_ajax_private() ) {
+			add_action( 'wp_ajax_' . $hook->get_handle(), $hook->get_callback() );
+		}
+
+		$hook->registered();
+		return $hook;
 	}
 
 	/**
@@ -210,9 +172,14 @@ class Hook_Manager {
 	 * @throws Invalid_Hook_Callback_Exception
 	 */
 	protected function register_shortcode( Hook $hook ): Hook {
-		if ( \is_callable( $hook->get_callback() ) ) {
+		if ( ! \is_callable( $hook->get_callback() ) ) {
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
+
+		\add_shortcode( $hook->get_handle(), $hook->get_callback() );
+
+		$hook->registered();
+		return $hook;
 	}
 
 

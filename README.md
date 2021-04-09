@@ -1,27 +1,27 @@
-# Loader
+# Hook_Loader
 
-The PinkCrab Hook Loader.
+The PinkCrab Hook Hook_Loader.
 
-![alt text](https://img.shields.io/badge/Current_Version-1.0.2-yellow.svg?style=flat " ")
-
- 
+![alt text](https://img.shields.io/badge/Current_Version-1.1.0-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-
-![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
-[![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Loader)
+![](https://github.com/Pink-Crab/Hook_Loader/workflows/GitHub_CI/badge.svg " ")
+[![codecov](https://codecov.io/gh/Pink-Crab/Hook_Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Hook_Loader)
 
 For more details please visit our docs.
 https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 ## Version ##
 
-**Release 1.0.2**
+**Release 1.1.0**
+
+> Since v1.0.0 we have made some changes to have this all works under the hood, we have changed from Loader to Hook_Loader as the main class, but Loader has been left in as pollyfill for older versions.
 
 ## Why? ##
 
 WordPress and especially WooCommerce is built around hooks and if you have to register a lot of them, it can be hard to keep track of them all and what is currently being registered with WP. 
 
-The PinkCrab Loader gives a more manageable way of registering and removing hook call, shortcode and ajax calls.
+The PinkCrab Hook_Loader gives a more manageable way of registering and removing hook call, shortcode and ajax calls.
+
 
 ## Setup ##
 
@@ -33,20 +33,20 @@ $ composer require pinkcrab/hook-loader
 Once you have the hook loader installed it just case of putting it to use. As this is all held as a class, you can pass the instance as depenedecnies to any class you wish to give access to the loader.
 
 ## Registering Hooks (actions & filters)
-> **Loader::action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::action(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
-> **Loader::admin_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::admin_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
-> **Loader::front_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::front_action(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
-> **Loader::filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
-> **Loader::admin_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::admin_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
-> **Loader::front_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
+> **Hook_Loader::front_filter(string $hook, callable $method, int $priority=10, int $args = 1): void**
 
 ```php
-$loader = new Loader();
+$loader = new Hook_Loader();
 
 // Add actions
 $loader->action('some_action', 'my_callback'); // Registered front and admin
@@ -78,10 +78,10 @@ $loader->register_hooks();
 class SomeAction{
 	/**	
 	 * Register all hooks for this class
-	 * @param Loader $loader
+	 * @param Hook_Loader $loader
 	 * @return void
 	 */
-	public function hooks(Loader $loader){
+	public function hooks(Hook_Loader $loader){
 		$loader->action('action_handle', [$this, 'some_method')], 20);
 	}
 
@@ -92,7 +92,7 @@ class SomeAction{
 }
 
 // In your code, just pass the loader to this class.
-$loader = new Loader();
+$loader = new Hook_Loader();
 $some_action = new SomeAction();
 
 // Add all the some_action hooks to loader and register them.
@@ -102,11 +102,11 @@ $loader->register_hooks();
 ```
 
 ## Hook Removal (actions & filters)
-> **Loader::remove(string $hook, callable $method, int $priority=10): void**
+> **Hook_Loader::remove(string $hook, callable $method, int $priority=10): void**
 
-> **Loader::remove_filter(string $hook, callable $method, int $priority=10): void**
+> **Hook_Loader::remove_filter(string $hook, callable $method, int $priority=10): void**
 
-> **Loader::remove_hook(string $hook, callable $method, int $priority=10): void**
+> **Hook_Loader::remove_hook(string $hook, callable $method, int $priority=10): void**
 
 While remove_action() and remove_filter() are prefectly suitable 90% of the time, it can be tricky to unset hooks with have been added as isntance to classes, you can not recall the same instance. Out Hook_Removal class will manually remove all hooks based on the class name (instance or static use). Allowing for the removal of hooks created by other plugins. 
 
@@ -123,7 +123,7 @@ $loader->remove('action_handle', [new SomeAction(), 'some_method'], 20);
 ```
 
 ## Shortcodes
-> **Loader::shortcode(string $hook, callable $method): void**
+> **Hook_Loader::shortcode(string $hook, callable $method): void**
 
 You can easily add shortcodes using the loader, not only that you ensure they come with fully populated objects behind them
 
@@ -148,7 +148,7 @@ class ShortCode {
 		$this->some_service = $some_service;
 	}
 
-	public function register(Loader $loader){
+	public function register(Hook_Loader $loader){
 		$loader->shortcode('my_shortcode', [$this, ['render_shortcode']]);
 	}
 
@@ -159,9 +159,9 @@ class ShortCode {
 
 ```
 ## Ajax
-> **Loader::ajax(string $hook, callable $method, bool $public, bool $private): void**
+> **Hook_Loader::ajax(string $hook, callable $method, bool $public, bool $private): void**
 
-If you want to register ajax calls, it requires 2 hook calls. This soon gets messy if you are setting up multiple calls. The Loader can handle registering either or both of this with a single declaration.
+If you want to register ajax calls, it requires 2 hook calls. This soon gets messy if you are setting up multiple calls. The Hook_Loader can handle registering either or both of this with a single declaration.
 
 ```php
 
@@ -221,6 +221,6 @@ http://www.opensource.org/licenses/mit-license.html
 
 ## Change Log ##
 
-* 1.0.2 - Fixed incorrect docblock on Loader_Collection::pop() and adding missing readme entries for shortcode and ajax.
+* 1.0.2 - Fixed incorrect docblock on Hook_Loader_Collection::pop() and adding missing readme entries for shortcode and ajax.
 * 1.0.1 - Added pop() and count() to the hook collection. Not used really from outside, only in tests.
 * 1.0.0 - Moved from Plugin Core package. Moved the internal collection to there own Object away from PC Collection.

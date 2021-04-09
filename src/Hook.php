@@ -85,24 +85,6 @@ class Hook {
 	protected $ajax_public = true;
 
 	/**
-	 * Lazy evaluation off callback
-	 * @var bool
-	 * */
-	protected $lazy = false;
-
-	/**
-	 * If this hook should has its creation deferred to another hook
-	 * @var string|null
-	 * */
-	protected $deferred_hook = null;
-
-	/**
-	 * Deferred hook priority
-	 * @var int
-	 * */
-	protected $deferred_proirity = 10;
-
-	/**
 	 * Should this hook be loaded if is_admin === true
 	 * @var bool
 	 * */
@@ -121,12 +103,12 @@ class Hook {
 	protected $registered = false;
 
 	/**
-     * @param string $handle
-     * @param callable|array{0:string,1:string} $callback
-     * @param int $priority
-     * @param int $args
-     */
-    public function __construct(
+	 * @param string $handle
+	 * @param callable|array{0:string,1:string} $callback
+	 * @param int $priority
+	 * @param int $args
+	 */
+	public function __construct(
 		string $handle,
 		$callback,
 		int $priority = 10,
@@ -267,68 +249,6 @@ class Hook {
 	 */
 	public function ajax_public( bool $ajax_public = true ): self {
 		$this->ajax_public = $ajax_public;
-		return $this;
-	}
-
-	/**
-	 * Get lazy evaluation off callback
-	 * @return bool
-	 */
-	public function is_lazy(): bool {
-		return $this->lazy;
-	}
-
-	/**
-	 * Set lazy evaluation off callback
-	 *
-	 * @param bool $lazy  Lazy evaluation off callback
-	 * @return self
-	 */
-	public function lazy( bool $lazy = true ): self {
-		$this->lazy = $lazy;
-		return $this;
-	}
-
-	/**
-	 * Get if this hook should has its creation deferred to another hook
-	 * @return array{handle:string,priority:int}|null
-	 */
-	public function get_deferred_on(): ?array {
-		return $this->deferred_hook !== null
-			? array(
-				'handle'   => $this->deferred_hook,
-				'priority' => $this->deferred_proirity,
-			)
-			: null;
-	}
-
-	/**
-	 * Checks if the hook is to be deferred
-	 * @return bool
-	 */
-	public function is_deferred(): bool {
-		return $this->deferred_hook !== null;
-	}
-
-	/**
-	 * Sets the hook to deffer the call.
-	 *
-	 * @param string|null $deferred_hook
-	 * @return self
-	 */
-	public function deferred_hook( ?string $deferred_hook ): self {
-		$this->deferred_hook = $deferred_hook;
-		return $this;
-	}
-
-	/**
-	 * Sets the proirity of the deferred hook.
-	 *
-	 * @param int $deferred_proirity
-	 * @return self
-	 */
-	public function deferred_proirity( int $deferred_proirity ): self {
-		$this->deferred_proirity = $deferred_proirity;
 		return $this;
 	}
 

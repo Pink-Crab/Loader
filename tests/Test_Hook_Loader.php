@@ -17,7 +17,8 @@ use WP_UnitTestCase;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\FunctionConstructors\Arrays as Arr;
 use PinkCrab\Loader\Tests\Fixtures\Hook_Manager_NoOp_Mock;
-use PinkCrab\Loader\{Hook,Hook_Loader,Hook_Factory,Hook_Collection};
+use PinkCrab\Loader\Tests\Fixtures\Hook_Manager_Object_Mock;
+use PinkCrab\Loader\{Hook,Hook_Loader,Hook_Factory,Hook_Collection, Hook_Manager};
 
 class Test_Hook_Loader extends WP_UnitTestCase {
 
@@ -244,6 +245,5 @@ class Test_Hook_Loader extends WP_UnitTestCase {
 				}
 			)( $hooks->export() )
 		);
-
 	}
 }

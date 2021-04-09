@@ -17,10 +17,10 @@ namespace PinkCrab\Loader\Tests;
 use WP_UnitTestCase;
 use ReflectionFunction;
 use PinkCrab\Loader\Hook;
-use InvalidArgumentException;
-use PinkCrab\Loader\Hook_Removal;
+use Automattic\Jetpack\Constants;
 use Gin0115\WPUnit_Helpers\Objects;
 use PinkCrab\Loader\Tests\Fixtures\Hook_Manager_Object_Mock;
+use PinkCrab\Loader\Exceptions\Invalid_Hook_Callback_Exception;
 
 class Test_Hook_Manager extends WP_UnitTestCase {
 
@@ -48,21 +48,16 @@ class Test_Hook_Manager extends WP_UnitTestCase {
 		$this->assertEquals( 'is_int', $manager->_hooks['remove']['remove']['callback'] );
 	}
 
-	/** @testdox When a deferred hook is processed, a new hook should be created using the defined hook handle and priority. Its callback should be set to run add_action, add_filter with the itnital data, on the deferred hook call. */
-	public function test_can_map_deferred_hook() {
-		$inital_hook = ( new Hook( 'inital_hook', 'is_string' ) )
-			->deferred_hook( 'deferred_hook' );
-
+	/** @testdox When an invalid hook type is passed, it should not be processed. */
+	public function test_invalid_hook_types_are_not_processed(): void {
+		$invalid = ( new Hook( 'remove', 'is_int' ) )->type( 'INVALID' );
 		$manager = new Hook_Manager_Object_Mock();
-		$manager->process_hook( $inital_hook );
+		$invalid = $manager->process_hook( $invalid );
+		$this->assertFalse( $invalid->is_registered() );
+	}
 
-		// Check deferred hook added and grab details
-		$this->assertArrayHasKey( 'deferred_hook', $manager->_hooks['actions'] );
-		$deferred_hook_details = $manager->_hooks['actions']['deferred_hook'];
-
-		// Get callback details
-		$reflected_callback = new ReflectionFunction( $deferred_hook_details['callback'] );
-		$reflected_use_args = $reflected_callback->getStaticVariables();
-		$this->assertSame( $inital_hook, $reflected_use_args['hook'] );
+	public function FunctionName(Type $var = null)
+	{
+		# code...
 	}
 }
