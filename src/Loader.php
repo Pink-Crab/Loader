@@ -24,11 +24,6 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-use PinkCrab\Loader\{
-	Hook_Removal,
-	Hook_Collection
-};
-
 class Loader extends Hook_Loader {
 
 	/**
