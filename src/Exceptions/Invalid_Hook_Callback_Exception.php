@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * The hook loader.
+ * Invaild callback hook exception.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -16,23 +16,31 @@ declare(strict_types=1);
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @since 1.0.0
+ * @since 0.1.0
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  * @package PinkCrab\Loader
  */
 
-namespace PinkCrab\Loader;
+namespace PinkCrab\Loader\Exceptions;
 
-class Loader extends Hook_Loader {
+use Exception;
+use PinkCrab\Loader\Hook;
+
+class Invalid_Hook_Callback_Exception extends Exception {
 
 	/**
-	 * Boots the loader as a static instance.
+	 * Throw invlaid callback exception.
 	 *
-	 * @return self
+	 * @param \PinkCrab\Loader\Hook $hook
+	 * @return Invalid_Hook_Callback_Exception
 	 */
-	public static function boot(): self {
-		return new Loader();
+	public static function from_hook( Hook $hook ): Invalid_Hook_Callback_Exception {
+		$message = sprintf(
+			'%s hook was called with an invalid callback. Only %s hooks may use malformed callback arrays',
+			$hook->get_type(),
+			Hook::REMOVE
+		);
+		return new Invalid_Hook_Callback_Exception( $message );
 	}
-
 }

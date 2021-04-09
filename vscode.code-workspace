@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"phpcs.enable": true,
+		"phpcbf.enable": true,
+		"phpcs.executablePath": "/usr/bin/phpcs",
+		"phpcs.standard": "WordPress-Core",
+		"phpcs.showWarnings": true,
+		"phpcs.showSources": true,
+		"phpcbf.executablePath": "/usr/bin/phpcbf",
+		"phpcbf.documentFormattingProvider": true,
+		"phpcbf.standard": "WordPress-Core",
+		"[php]": {
+			"editor.defaultFormatter": "persoderlind.vscode-phpcbf"
+		},
+		"phpcbf.onsave": true,
+		"php-docblocker.useShortNames": true,
+		"php-docblocker.qualifyClassNames": true,
+		"php-docblocker.author": {
+			"name": "Glynn Quelch",
+			"email": "glynn.quelch@gmail.com"
+		}
+	}
+}
