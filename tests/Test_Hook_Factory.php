@@ -132,7 +132,7 @@ class Test_Hook_Factory extends WP_UnitTestCase
         $hook = $this->hook_factory->remove(
             'some_action',
             array(Hooks_Via_Static::class, 'filter_callback_static'),
-            50,
+            50
         );
         $this->assertEquals(Hook::REMOVE, $hook->get_type());
         $this->assertEquals('some_action', $hook->get_handle());
