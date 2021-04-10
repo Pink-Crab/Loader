@@ -232,7 +232,7 @@ class Test_Hook_Loader extends WP_UnitTestCase {
 		$loader->filter( 'global_filter', 'is_string' );
 
 		// Process use mock manager (just marks the hooks as registered)
-		$loader->regsiter_hooks( new Hook_Manager_NoOp_Mock() );
+		$loader->register_hooks( new Hook_Manager_NoOp_Mock() );
 
 		/** @var Hook_Collection Extracted internal Collection */
 		$hooks = Objects::get_property( $loader, 'hooks' );

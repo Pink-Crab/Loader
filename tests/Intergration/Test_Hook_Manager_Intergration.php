@@ -187,7 +187,7 @@ class Test_Hook_Manager_Intergration extends WP_UnitTestCase {
 		$loader = new Hook_Loader;
 		$loader->filter( 'mock_action', 'is_string' );
 
-		$loader->regsiter_hooks();
+		$loader->register_hooks();
 
 		$this->assertTrue( has_filter( 'mock_action' ) );
 	}
