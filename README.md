@@ -3,7 +3,7 @@
 The PinkCrab Hook Hook_Loader.
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.1.0-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.1.1-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Loader)
@@ -13,7 +13,7 @@ https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
 
 ## Version ##
 
-**Release 1.1.0**
+**Release 1.1.1**
 
 > Since v1.0.0 we have made some changes to have this all works under the hood, we have changed from Loader to Hook_Loader as the main class, but Loader has been left in as pollyfill for older versions.
 
@@ -221,7 +221,7 @@ $ composer sniff
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
-
+* 1.1.1 - Typo on register_hooks() (spelt at regster_hooks)
 * 1.1.0 - All internal functionality moved over, still has the same ex
 * 1.0.2 - Fixed incorrect docblock on Hook_Loader_Collection::pop() and adding missing readme entries for shortcode and ajax.
 * 1.0.1 - Added pop() and count() to the hook collection. Not used really from outside, only in tests.
