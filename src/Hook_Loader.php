@@ -213,7 +213,7 @@ class Hook_Loader {
 	 * @param Hook_Manager|null $hook_manager
 	 * @return void
 	 */
-	public function regsiter_hooks( ?Hook_Manager $hook_manager = null ): void {
+	public function register_hooks( ?Hook_Manager $hook_manager = null ): void {
 
 		if ( $hook_manager === null ) {
 			$hook_manager = new Hook_Manager();
