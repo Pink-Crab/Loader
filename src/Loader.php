@@ -20,15 +20,20 @@ declare(strict_types=1);
  * @author Glynn Quelch <glynn.quelch@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  * @package PinkCrab\Loader
+ * @deprecated 1.1.2 This will be removed in future versions
  */
 
 namespace PinkCrab\Loader;
 
+/**
+ * @deprecated 1.1.2
+ */
 class Loader extends Hook_Loader {
 
 	/**
 	 * Boots the loader as a static instance.
 	 *
+	 * @deprecated 1.1.2
 	 * @return self
 	 */
 	public static function boot(): self {
