@@ -221,7 +221,7 @@ $ composer sniff
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
-* 1.2.1 - Loader::class has now been marked as deprecated
+* 1.1.2 - Loader::class has now been marked as deprecated
 * 1.1.1 - Typo on register_hooks() (spelt at regster_hooks)
 * 1.1.0 - All internal functionality moved over, still has the same ex
 * 1.0.2 - Fixed incorrect docblock on Hook_Loader_Collection::pop() and adding missing readme entries for shortcode and ajax.
