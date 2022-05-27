@@ -1,6 +1,5 @@
 name: GitHub_CI
-description:
-  - Manages GitHub_CI.
+
 on:
   push:
     branches: [ master, develop ]
