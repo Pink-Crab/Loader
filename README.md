@@ -9,7 +9,7 @@ The PinkCrab Hook Hook_Loader.
 [![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Loader)
 
 For more details please visit our docs.
-https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
+https://perique.info/lib/Hook_Loader.html
 
 ## Version ##
 
