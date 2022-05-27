@@ -28,7 +28,6 @@ use PinkCrab\Loader\{Hook,Hook_Factory,Hook_Collection,Hook_Manager};
 
 class Hook_Loader {
 
-
 	/**
 	 * Internal array holding the Hooks.
 	 *
