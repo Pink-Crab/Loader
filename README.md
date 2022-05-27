@@ -173,46 +173,6 @@ $loader->ajax('my_action', 'my_callback', true, false); // For only logged out u
 As with the other examples this can be used as part of class to create self contained ajax calls. While this can be done manually, the Registerables package comes with a very useful Ajax abstract class which can be used.
 
 
-## Testing ##
-
-To run the full suite (as run via GH CLI)
-
-```bash
-	composer all
-```
-
-### PHP Unit ###
-
-If you would like to run the tests for this package, please ensure you add your database details into the test/wp-config.php file before running phpunit.
-
-```bash 
-$ composer test
-
-``` 
-
-Run with coverage report (/coverage-report)
-```bash 
-$ composer coverage
-```
-
-### PHP Stan ###
-
-The module comes with a pollyfill for all WP Functions, allowing for the testing of all core files. The current config omits the Dice file as this is not ours. To run the suite call.
-
-```bash 
-$ vendor/bin/phpstan analyse src/ -l8 
-
-``` 
-```bash 
-$ composer analyse
-```
-
-### PHPCS ###
-
-You can run the codebase thorough PHPCS by calling.
-```bash 
-$ composer sniff
-```
 
 ## License ##
 
