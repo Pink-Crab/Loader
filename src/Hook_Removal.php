@@ -85,6 +85,17 @@ class Hook_Removal {
 			return true;
 		}
 
+		// If faux callable with class-string
+		if ( \is_array( $callback )
+		&& \count( $callback ) === 2
+		&& \is_string( $callback[0] )
+		&& \class_exists( $callback[0], false )
+		&& \is_string( $callback[1] )
+		&& \method_exists( $callback[0], $callback[1] )
+		) {
+			return true;
+		}
+
 		return false;
 	}
 
