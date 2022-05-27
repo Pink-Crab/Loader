@@ -3,17 +3,17 @@
 The PinkCrab Hook Hook_Loader.
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.1.2-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.2.0-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Loader)
 
 For more details please visit our docs.
-https://app.gitbook.com/@glynn-quelch/s/pinkcrab/
+https://perique.info/lib/Hook_Loader.html
 
 ## Version ##
 
-**Release 1.1.2**
+**Release 1.2.0**
 
 > Since v1.0.0 we have made some changes to have this all works under the hood, we have changed from Loader to Hook_Loader as the main class, but Loader has been left in as pollyfill for older versions.
 
@@ -77,19 +77,19 @@ $loader->register_hooks();
 
 ``` php
 class SomeAction{
-	/**	
-	 * Register all hooks for this class
-	 * @param Hook_Loader $loader
-	 * @return void
-	 */
-	public function hooks(Hook_Loader $loader){
-		$loader->action('action_handle', [$this, 'some_method')], 20);
-	}
+  /**
+   * Register all hooks for this class
+   * @param Hook_Loader $loader
+   * @return void
+   */
+  public function hooks(Hook_Loader $loader){
+    $loader->action('action_handle', [$this, 'some_method')], 20);
+  }
 
-	// The callback
-	public function some_method(){
-		print 'I WAS CALLED';
-	}
+  // The callback
+  public function some_method(){
+    print 'I WAS CALLED';
+  }
 }
 
 // In your code, just pass the loader to this class.
@@ -131,10 +131,10 @@ You can easily add shortcodes using the loader, not only that you ensure they co
 ``` php
 // Simple example
 $loader->shortcode(
-	'testShortCode',
-	function( $atts ) {
-		echo $atts['text'];
-	}
+  'testShortCode',
+  function( $atts ) {
+    echo $atts['text'];
+  }
 );
 
 // Called with shortcode as normal (either in php or wp-admin text input) 
@@ -143,19 +143,19 @@ do_shortcode( "[testShortCode text='yes']" ); // yes
 // Part of a class
 class ShortCode {
 
-	protected $some_service;
+  protected $some_service;
 
-	public function __construct(Some_Service $some_service){
-		$this->some_service = $some_service;
-	}
+  public function __construct(Some_Service $some_service){
+    $this->some_service = $some_service;
+  }
 
-	public function register(Hook_Loader $loader){
-		$loader->shortcode('my_shortcode', [$this, ['render_shortcode']]);
-	}
+  public function register(Hook_Loader $loader){
+    $loader->shortcode('my_shortcode', [$this, ['render_shortcode']]);
+  }
 
-	public function render_shortcode(array $args){
-		print $this->some_service->do_something($args['something']);
-	}
+  public function render_shortcode(array $args){
+    print $this->some_service->do_something($args['something']);
+  }
 }
 
 ```
@@ -172,46 +172,17 @@ $loader->ajax('my_action', 'my_callback', true, false); // For only logged out u
 ```
 As with the other examples this can be used as part of class to create self contained ajax calls. While this can be done manually, the Registerables package comes with a very useful Ajax abstract class which can be used.
 
+## Filtering Hooks
 
-## Testing ##
+It is possible access the Hook Collection before it is registered, this allows for the filtering of the hooks.
 
-To run the full suite (as run via GH CLI)
+> You can either use the Hook_Collection class constant `Hook_Collection::REGISTER_HOOKS` or its literal string value `pinkcrab/loader/register_hooks`
 
-```bash
-	composer all
-```
-
-### PHP Unit ###
-
-If you would like to run the tests for this package, please ensure you add your database details into the test/wp-config.php file before running phpunit.
-
-```bash 
-$ composer test
-
-``` 
-
-Run with coverage report (/coverage-report)
-```bash 
-$ composer coverage
-```
-
-### PHP Stan ###
-
-The module comes with a pollyfill for all WP Functions, allowing for the testing of all core files. The current config omits the Dice file as this is not ours. To run the suite call.
-
-```bash 
-$ vendor/bin/phpstan analyse src/ -l8 
-
-``` 
-```bash 
-$ composer analyse
-```
-
-### PHPCS ###
-
-You can run the codebase thorough PHPCS by calling.
-```bash 
-$ composer sniff
+``` php
+add_filter(Hook_Collection::REGISTER_HOOKS, function($hooks){
+  // Do something with the hooks
+  return $hooks;
+});
 ```
 
 ## License ##
@@ -221,6 +192,7 @@ $ composer sniff
 http://www.opensource.org/licenses/mit-license.html  
 
 ## Change Log ##
+* 1.2.0 - Updated testing dependencies and support for php8, added in the ability to filter hooks prior to registration.
 * 1.1.2 - Loader::class has now been marked as deprecated
 * 1.1.1 - Typo on register_hooks() (spelt at regster_hooks)
 * 1.1.0 - All internal functionality moved over, still has the same ex
