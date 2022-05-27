@@ -3,7 +3,7 @@
 The PinkCrab Hook Hook_Loader.
 
 
-![alt text](https://img.shields.io/badge/Current_Version-1.1.2-yellow.svg?style=flat " ") 
+![alt text](https://img.shields.io/badge/Current_Version-1.2.0-yellow.svg?style=flat " ") 
 [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 ![](https://github.com/Pink-Crab/Loader/workflows/GitHub_CI/badge.svg " ")
 [![codecov](https://codecov.io/gh/Pink-Crab/Loader/branch/master/graph/badge.svg?token=94DFTAVAAI)](https://codecov.io/gh/Pink-Crab/Loader)
@@ -13,7 +13,7 @@ https://perique.info/lib/Hook_Loader.html
 
 ## Version ##
 
-**Release 1.1.2**
+**Release 1.2.0**
 
 > Since v1.0.0 we have made some changes to have this all works under the hood, we have changed from Loader to Hook_Loader as the main class, but Loader has been left in as pollyfill for older versions.
 
