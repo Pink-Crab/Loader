@@ -52,4 +52,35 @@ class Test_Hook_Collection extends TestCase {
 		$collection = new Hook_Collection;
 		$this->assertNull( $collection->pop() );
 	}
+
+		/** @testdox It should be possible to filter the hooks, before they are registered. */
+	public function test_can_filter_hooks_prior_to_registration(): void {
+		$inital_hook       = new Hook( 'action', 'is_string' );
+		$collection = new Hook_Collection;
+		$collection->push( $inital_hook );
+		
+		add_filter( Hook_Collection::REGISTER_HOOKS, function( $hooks ) {
+			// Change the first hooks handle.
+			$hooks[0]->handle('changed_via_filter');
+
+			// Add a custom hook.
+			$hooks[] = new Hook( 'added_via_filter', 'is_string' );
+
+			return $hooks;
+		} );
+
+		// Register hooks and keep a log.
+		$registered_hooks = [];
+		$collection->register(function($hook) use(&$registered_hooks) {
+			$registered_hooks[] = $hook;
+		});
+
+		$this->assertCount(2, $registered_hooks);
+		$this->assertEquals('changed_via_filter', $registered_hooks[0]->get_handle());
+		$this->assertEquals('added_via_filter', $registered_hooks[1]->get_handle());
+		$this->assertSame($inital_hook, $registered_hooks[0]);
+
+		// Clean up and remove hook.
+		unset($GLOBALS['wp_filter'][Hook_Collection::REGISTER_HOOKS]);
+	}
 }

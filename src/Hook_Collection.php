@@ -30,6 +30,11 @@ use PinkCrab\Loader\Hook;
 class Hook_Collection implements Countable {
 
 	/**
+	 * Filter used to filter the Hooks.
+	 */
+	const REGISTER_HOOKS = 'pinkcrab/loader/register_hooks';
+
+	/**
 	 * Holds the hooks.
 	 *
 	 * @var Hook[]
@@ -54,8 +59,18 @@ class Hook_Collection implements Countable {
 	 * @return void
 	 */
 	public function register( callable $function ): void {
-		foreach ( $this->hooks as $key => $hook ) {
+		// Filter the hooks, to add/amend filters.
+		$hooks = \apply_filters( self::REGISTER_HOOKS, $this->hooks );
+
+		foreach ( $hooks as $key => $hook ) {
 			$function( $hook );
+
+			// If array key doesnt exist, then add to end.
+			if ( ! \array_key_exists( $key, $this->hooks ) ) {
+				$key                 = ( array_key_last( $hooks ) + 1 );
+				$this->hooks[ $key ] = $hook;
+			}
+
 			$this->hooks[ $key ]->registered( true );
 		}
 	}
