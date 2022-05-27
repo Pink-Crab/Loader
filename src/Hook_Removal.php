@@ -30,6 +30,7 @@ use InvalidArgumentException;
 
 class Hook_Removal {
 
+
 	/**
 	 * Filter/Action handle
 	 *
@@ -81,7 +82,7 @@ class Hook_Removal {
 	 */
 	protected function validate_callback( $callback ): bool {
 		if ( \is_callable( $callback ) ) {
-				return true;
+			return true;
 		}
 
 		return false;
@@ -101,19 +102,22 @@ class Hook_Removal {
 
 		foreach ( $this->registered_hooks() as $key => $registered_callback ) {
 			// Is class.
-			if ( \is_array( $registered_callback['function'] )
-			&& \count( $registered_callback['function'] ) === 2
-			&& $this->matching_class_callback( $registered_callback ) ) {
+			if (
+				\is_array( $registered_callback['function'] )
+				&& \count( $registered_callback['function'] ) === 2
+				&& $this->matching_class_callback( $registered_callback )
+			) {
 				unset( $this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ][ $key ] );
 				$removed = true;
 			}
 
 			// Is global function
-			if ( \is_string( $registered_callback['function'] )
-			&& $this->matching_function_callback( $registered_callback ) ) {
+			if (
+				\is_string( $registered_callback['function'] )
+				&& $this->matching_function_callback( $registered_callback )
+			) {
 				unset( $this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ][ $key ] );
 				$removed = true;
-
 			}
 		}
 
@@ -123,12 +127,13 @@ class Hook_Removal {
 	/**
 	 * Checks if a registered callback matches a defined gloabl function.
 	 *
-	 * @param array<string, string> $registered_callback
+	 * @param array{function:(string|array{0:(string|object), 1:string}), accepted_args:int} $registered_callback
 	 * @return bool
 	 */
-	protected function matching_function_callback( array $registered_callback ): bool {
+	protected function matching_function_callback( $registered_callback ): bool {
 		return \is_string( $this->callback )
-			&& \strcmp( $registered_callback['function'], $this->callback ) === 0;
+		&& \is_string( $registered_callback['function'] )
+		&& \strcmp( $registered_callback['function'], $this->callback ) === 0;
 	}
 
 	/**
@@ -136,10 +141,10 @@ class Hook_Removal {
 	 *
 	 * Checks the class based on its name, not the instance.
 	 *
-	 * @param array<string, array> $registered_callback
+	 * @param array{function:(string|array{0:(string|object), 1:string}), accepted_args:int} $registered_callback
 	 * @return bool
 	 */
-	protected function matching_class_callback( array $registered_callback ): bool {
+	protected function matching_class_callback( $registered_callback ): bool {
 		$registered_class = \is_object( $registered_callback['function'][0] )
 			? \get_class( $registered_callback['function'][0] )
 			: $registered_callback['function'][0];
@@ -152,14 +157,14 @@ class Hook_Removal {
 	}
 
 	/**
-	 * All registerd hooks on the defined handle and priority.
+	 * All registered hooks on the defined handle and priority.
 	 *
-	 * @return array<string, array>
+	 * @return array<string|int, array{function:(string|array{0:(string|object), 1:string}), accepted_args:int}>
 	 */
 	protected function registered_hooks(): array {
 		return \array_filter(
 			$this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ],
-			function( array $callback ) {
+			function ( array $callback ) {
 				return \array_key_exists( 'function', $callback );
 			}
 		);
@@ -168,7 +173,7 @@ class Hook_Removal {
 	/**
 	 * Returns the current callback object as an array of strings
 	 *
-	 * @return array<string, string>
+	 * @return array{'class':string, method:string}
 	 */
 	protected function get_callback_as_array(): array {
 		if ( ! \is_array( $this->callback ) ) {
@@ -178,9 +183,12 @@ class Hook_Removal {
 			);
 		}
 
+		/** @var array{0:(string|object), 1:string} */
+		$callback = $this->callback;
+
 		return array(
-			'class'  => \is_object( $this->callback[0] ) ? \get_class( $this->callback[0] ) : $this->callback[0],
-			'method' => $this->callback[1],
+			'class'  => \is_object( $callback[0] ) ? \get_class( $callback[0] ) : $callback[0],
+			'method' => $callback[1],
 		);
 	}
 

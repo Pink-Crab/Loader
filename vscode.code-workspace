@@ -23,6 +23,9 @@
 		"php-docblocker.author": {
 			"name": "Glynn Quelch",
 			"email": "glynn.quelch@gmail.com"
+		},
+		"files.associations": {
+			"*.yaml": "home-assistant"
 		}
 	}
 }
