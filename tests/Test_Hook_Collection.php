@@ -79,5 +79,8 @@ class Test_Hook_Collection extends TestCase {
 		$this->assertEquals('changed_via_filter', $registered_hooks[0]->get_handle());
 		$this->assertEquals('added_via_filter', $registered_hooks[1]->get_handle());
 		$this->assertSame($inital_hook, $registered_hooks[0]);
+
+		// Clean up and remove hook.
+		unset($GLOBALS['wp_filter'][Hook_Collection::REGISTER_HOOKS]);
 	}
 }
