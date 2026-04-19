@@ -42,6 +42,7 @@ All registration methods return the created `Hook` object. Nothing binds to Word
 ## Methods (Registration)
 
 ### action
+**action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Hook callback.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -57,6 +58,7 @@ $loader->action( 'save_post', [ $saver, 'handle' ], 2, 20 );
 ```
 
 ### admin_action
+**admin_action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Hook callback.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -71,6 +73,7 @@ $loader->admin_action( 'admin_menu', [ $menu, 'register' ] );
 ```
 
 ### front_action
+**front_action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Hook callback.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -85,6 +88,7 @@ $loader->front_action( 'wp_enqueue_scripts', [ $assets, 'enqueue' ] );
 ```
 
 ### filter
+**filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Filter callback; must return the first argument.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -100,6 +104,7 @@ $loader->filter( 'wp_nav_menu_items', [ $menu, 'append' ], 2, 50 );
 ```
 
 ### admin_filter
+**admin_filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Filter callback; must return the first argument.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -114,6 +119,7 @@ $loader->admin_filter( 'post_row_actions', [ $rows, 'add_action' ], 2 );
 ```
 
 ### front_filter
+**front_filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to register against.
 > @param callable $callback Filter callback; must return the first argument.
 > @param int $args Number of arguments passed to the callback. Default 1.
@@ -130,6 +136,7 @@ $loader->front_filter( 'body_class', [ $body, 'classes' ], 1, 20 );
 ## Methods (Removal)
 
 ### remove
+**remove( string $handle, $callback, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to remove from.
 > @param callable|array{0:string,1:string} $callback Callable, or `[class-name, method-name]` array (both strings).
 > @param int $priority Priority the target hook was registered at. Default 10.
@@ -150,6 +157,7 @@ $loader->remove( 'init', 'some_global_function', 10 );
 ```
 
 ### remove_action
+**remove_action( string $handle, $callback, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to remove from.
 > @param callable|array{0:string,1:string} $callback Callable, or `[class-name, method-name]` array.
 > @param int $priority Priority the target hook was registered at. Default 10.
@@ -174,6 +182,7 @@ $loader->remove_action( 'init', [ $existing_instance, 'register' ], 10 );
 ```
 
 ### remove_filter
+**remove_filter( string $handle, $callback, int $priority = 10 ): Hook**
 > @param string $handle Hook handle to remove from.
 > @param callable|array{0:string,1:string} $callback Callable, or `[class-name, method-name]` array.
 > @param int $priority Priority the target hook was registered at. Default 10.
@@ -202,6 +211,7 @@ $loader->register_hooks();
 ## Methods (Shortcodes & Ajax)
 
 ### shortcode
+**shortcode( string $handle, callable $callback ): Hook**
 > @param string $handle Shortcode tag.
 > @param callable $callback Shortcode callback. Receives the attributes array and must return a string.
 > @return \PinkCrab\Loader\Hook
@@ -219,6 +229,7 @@ do_shortcode( "[my_shortcode text='hello']" );
 ```
 
 ### ajax
+**ajax( string $handle, callable $callback, bool $public_ajax = true, bool $private_ajax = true ): Hook**
 > @param string $handle Ajax action handle (without the `wp_ajax_` / `wp_ajax_nopriv_` prefix).
 > @param callable $callback Ajax handler callback.
 > @param bool $public_ajax Register against `wp_ajax_nopriv_<handle>` for anonymous users. Default true.
@@ -237,6 +248,7 @@ $loader->ajax( 'my_action', 'my_callback', false, true  );  // logged in only   
 ## Methods (Lifecycle)
 
 ### register_hooks
+**register_hooks(): void**
 > @return void
 
 Flushes every staged hook to WordPress. Call once, after all registrations have been declared. Before this is called nothing is bound to `$wp_filter` / `$wp_actions`.
