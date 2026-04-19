@@ -37,33 +37,95 @@ Then include the Composer autoloader in your project:
 require_once __DIR__ . '/vendor/autoload.php';
 ```
 
-## Registering Hooks (actions & filters)
+## Registering Hooks
 
-Every registration method takes the hook handle, the callback, and optional `$args` / `$priority`, mirroring WordPress's `add_action()` / `add_filter()`. `admin_*` variants register the hook only inside `wp-admin`; `front_*` variants only on the front-end; the bare `action` / `filter` register in both contexts.
+All registration methods return the created `Hook` object. Nothing is actually bound to WordPress until you call `$loader->register_hooks()` — until then hooks are just staged in the collection, which makes them easy to filter or inspect.
+
+### action()
 
 ```
-Hook_Loader::action(        string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
-Hook_Loader::admin_action(  string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
-Hook_Loader::front_action(  string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
-Hook_Loader::filter(        string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
-Hook_Loader::admin_filter(  string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
-Hook_Loader::front_filter(  string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+Hook_Loader::action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
 ```
 
-Each method returns the created `Hook` object so you can configure it further (e.g. change its type or priority) before `register_hooks()` is called.
+Registers an action on both admin and front-end contexts. Equivalent to `add_action($handle, $callback, $priority, $args)` when flushed.
+
+```php
+$loader->action( 'init', 'my_init_callback' );
+$loader->action( 'save_post', [ $saver, 'handle' ], 2, 20 );
+```
+
+### admin_action()
+
+```
+Hook_Loader::admin_action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+```
+
+Same as `action()` but only registers when the request is inside `wp-admin` (checked at flush time via `is_admin()`).
+
+```php
+$loader->admin_action( 'admin_menu', [ $menu, 'register' ] );
+```
+
+### front_action()
+
+```
+Hook_Loader::front_action( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+```
+
+Same as `action()` but only registers on the front-end (when `is_admin()` is false).
+
+```php
+$loader->front_action( 'wp_enqueue_scripts', [ $assets, 'enqueue' ] );
+```
+
+### filter()
+
+```
+Hook_Loader::filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+```
+
+Registers a filter on both admin and front-end contexts. The callback must return its first argument (the value being filtered).
+
+```php
+$loader->filter( 'the_content', 'my_content_filter' );
+$loader->filter( 'wp_nav_menu_items', [ $menu, 'append' ], 2, 50 );
+```
+
+### admin_filter()
+
+```
+Hook_Loader::admin_filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+```
+
+Same as `filter()` but only registers inside `wp-admin`.
+
+```php
+$loader->admin_filter( 'post_row_actions', [ $rows, 'add_action' ], 2 );
+```
+
+### front_filter()
+
+```
+Hook_Loader::front_filter( string $handle, callable $callback, int $args = 1, int $priority = 10 ): Hook
+```
+
+Same as `filter()` but only registers on the front-end.
+
+```php
+$loader->front_filter( 'body_class', [ $body, 'classes' ], 1, 20 );
+```
+
+### Flushing everything
 
 ```php
 $loader = new Hook_Loader();
 
-// Actions — run for their side-effects.
-$loader->action(       'init',           'my_init_callback' );              // admin + front
-$loader->admin_action( 'admin_menu',     'my_admin_menu_setup' );           // wp-admin only
-$loader->front_action( 'wp_enqueue_scripts', 'my_front_assets' );           // front only
-
-// Filters — must return the first argument.
-$loader->filter(       'the_content',    'my_content_filter' );             // admin + front
-$loader->admin_filter( 'post_row_actions','my_admin_row_actions', 2 );      // 2 args, wp-admin only
-$loader->front_filter( 'body_class',     'my_body_classes', 1, 20 );        // priority 20, front only
+$loader->action(       'init',                'my_init_callback' );
+$loader->admin_action( 'admin_menu',          'my_admin_menu_setup' );
+$loader->front_action( 'wp_enqueue_scripts',  'my_front_assets' );
+$loader->filter(       'the_content',         'my_content_filter' );
+$loader->admin_filter( 'post_row_actions',    'my_admin_row_actions', 2 );
+$loader->front_filter( 'body_class',          'my_body_classes', 1, 20 );
 
 // Commit everything to $wp_filter / $wp_actions.
 $loader->register_hooks();
@@ -95,36 +157,57 @@ $some_action->hooks( $loader );
 $loader->register_hooks();
 ```
 
-## Hook Removal (actions & filters)
-
-```
-Hook_Loader::remove(        string $handle, $callback, int $priority = 10 ): Hook
-Hook_Loader::remove_action( string $handle, $callback, int $priority = 10 ): Hook
-Hook_Loader::remove_filter( string $handle, $callback, int $priority = 10 ): Hook
-```
+## Removing Hooks
 
 WordPress's native `remove_action()` / `remove_filter()` require the *same* callable you passed to `add_action()`. That's easy for global functions and static methods, but breaks for hooks added against class instances — you need the original `$instance` to call `remove_action('foo', [$instance, 'method'])`, and that instance is often gone or inaccessible.
 
-`Hook_Loader`'s remove methods accept either a live callable *or* a `[class-name, method-name]` array (both strings). Internally, `Hook_Removal` walks `$wp_filter` and matches on class name and method name — no instance required.
+The remove methods on `Hook_Loader` accept either a live callable *or* a `[class-name, method-name]` array (both strings). Internally, `Hook_Removal` walks `$wp_filter` and matches on class name and method name — no instance required.
+
+### remove()
+
+```
+Hook_Loader::remove( string $handle, $callback, int $priority = 10 ): Hook
+```
+
+Removes a hook from either the action or filter registry. Accepts a callable, `[ClassName::class, 'method']`, or `[$instance, 'method']`.
 
 ```php
-// Match by class name only — no need to reconstruct an instance.
 $loader->remove( 'init', [ Some_Other_Plugin_Action::class, 'boot' ], 10 );
+```
 
-// Works equivalently with an instance, if you have one.
-$loader->remove( 'init', [ $instance, 'boot' ], 10 );
+### remove_action()
 
-// Plain callables also work.
-$loader->remove( 'init', 'some_global_function', 10 );
+```
+Hook_Loader::remove_action( string $handle, $callback, int $priority = 10 ): Hook
+```
+
+Alias for `remove()` that reads more explicitly at the call-site when you know you're targeting an action.
+
+```php
+$loader->remove_action( 'save_post', 'someone_elses_saver', 10 );
+```
+
+### remove_filter()
+
+```
+Hook_Loader::remove_filter( string $handle, $callback, int $priority = 10 ): Hook
+```
+
+Alias for `remove()` that reads more explicitly at the call-site when you know you're targeting a filter.
+
+```php
+$loader->remove_filter( 'the_content', [ Some_Other_Plugin_Filter::class, 'wrap' ], 10 );
 ```
 
 ## Shortcodes
+
+### shortcode()
 
 ```
 Hook_Loader::shortcode( string $handle, callable $callback ): Hook
 ```
 
-Shortcodes register with `add_shortcode()` when `register_hooks()` runs:
+Registers a shortcode. Runs `add_shortcode()` when `register_hooks()` fires.
 
 ```php
 $loader->shortcode( 'my_shortcode', function ( array $atts ): string {
@@ -137,19 +220,19 @@ do_shortcode( "[my_shortcode text='hello']" );
 
 ## Ajax
 
+### ajax()
+
 ```
 Hook_Loader::ajax( string $handle, callable $callback, bool $public_ajax = true, bool $private_ajax = true ): Hook
 ```
 
-WordPress splits AJAX into two actions: `wp_ajax_<handle>` (logged-in users) and `wp_ajax_nopriv_<handle>` (logged-out users). `Hook_Loader::ajax()` registers either or both from a single call:
+WordPress splits AJAX into two actions: `wp_ajax_<handle>` (authenticated users) and `wp_ajax_nopriv_<handle>` (anonymous users). `Hook_Loader::ajax()` registers either or both from a single call. `$public_ajax` controls the `wp_ajax_nopriv_*` registration; `$private_ajax` controls the `wp_ajax_*` registration.
 
 ```php
 $loader->ajax( 'my_action', 'my_callback', true,  true  );  // logged in AND logged out
 $loader->ajax( 'my_action', 'my_callback', true,  false );  // logged out only  ($private_ajax=false)
 $loader->ajax( 'my_action', 'my_callback', false, true  );  // logged in only   ($public_ajax=false)
 ```
-
-`$public_ajax` controls the `wp_ajax_nopriv_*` registration (anonymous users); `$private_ajax` controls the `wp_ajax_*` registration (authenticated users).
 
 ## Filtering hooks before registration
 
