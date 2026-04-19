@@ -68,10 +68,12 @@ class Hook_Removal {
 		if ( ! $this->validate_callback( $callback ) ) {
 			throw new InvalidArgumentException( 'Callback must be a valid callable or array<string|object, string> representing a valid callback.' );
 		}
-		$this->handle           = $handle;
-		$this->callback         = $callback;
-		$this->priority         = $priority;
-		$this->registered_hooks = $GLOBALS['wp_filter'];
+		$this->handle   = $handle;
+		$this->callback = $callback;
+		$this->priority = $priority;
+		/** @var array<string, \WP_Hook> $wp_filter */
+		$wp_filter              = is_array( $GLOBALS['wp_filter'] ?? null ) ? $GLOBALS['wp_filter'] : array();
+		$this->registered_hooks = $wp_filter;
 	}
 
 	/**
@@ -115,7 +117,6 @@ class Hook_Removal {
 			// Is class.
 			if (
 				\is_array( $registered_callback['function'] )
-				&& \count( $registered_callback['function'] ) === 2
 				&& $this->matching_class_callback( $registered_callback )
 			) {
 				unset( $this->registered_hooks[ $this->handle ]->callbacks[ $this->priority ][ $key ] );

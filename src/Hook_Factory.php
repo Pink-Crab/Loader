@@ -34,7 +34,7 @@ class Hook_Factory {
 	 * Creates an action.
 	 *
 	 * @param string $handle
-	 * @param callable $callable
+	 * @param callable $callback
 	 * @param integer $args
 	 * @param integer $priroty
 	 * @param boolean $is_admin
@@ -43,13 +43,13 @@ class Hook_Factory {
 	 */
 	public function action(
 		string $handle,
-		callable $callable,
+		callable $callback,
 		int $args = 1,
 		int $priroty = 10,
 		bool $is_admin = true,
 		bool $is_public = true
 	): Hook {
-		$hook = new Hook( $handle, $callable, $priroty, $args );
+		$hook = new Hook( $handle, $callback, $priroty, $args );
 		$hook->type( Hook::ACTION );
 		$hook->admin( $is_admin );
 		$hook->front( $is_public );
@@ -60,7 +60,7 @@ class Hook_Factory {
 	 * Creates a filter.
 	 *
 	 * @param string $handle
-	 * @param callable $callable
+	 * @param callable $callback
 	 * @param integer $args
 	 * @param integer $priroty
 	 * @param boolean $is_admin
@@ -69,13 +69,13 @@ class Hook_Factory {
 	 */
 	public function filter(
 		string $handle,
-		callable $callable,
+		callable $callback,
 		int $args = 1,
 		int $priroty = 10,
 		bool $is_admin = true,
 		bool $is_public = true
 	): Hook {
-		$hook = new Hook( $handle, $callable, $priroty, $args );
+		$hook = new Hook( $handle, $callback, $priroty, $args );
 		$hook->type( Hook::FILTER );
 		$hook->admin( $is_admin );
 		$hook->front( $is_public );
@@ -86,16 +86,16 @@ class Hook_Factory {
 	 * Removes a hook
 	 *
 	 * @param string $handle
-	 * @param callable|array{0:string,1:string} $callable
+	 * @param callable|array{0:string,1:string} $callback
 	 * @param integer $priroty
 	 * @return Hook
 	 */
 	public function remove(
 		string $handle,
-		$callable,
+		$callback,
 		int $priroty = 10
 	): Hook {
-		$hook = new Hook( $handle, $callable, $priroty );
+		$hook = new Hook( $handle, $callback, $priroty );
 		$hook->type( Hook::REMOVE );
 		return $hook;
 	}
@@ -104,14 +104,14 @@ class Hook_Factory {
 	 * Creates a shortcode.
 	 *
 	 * @param string $handle
-	 * @param callable $callable
+	 * @param callable $callback
 	 * @return Hook
 	 */
 	public function shortcode(
 		string $handle,
-		callable $callable
+		callable $callback
 	): Hook {
-		$hook = new Hook( $handle, $callable );
+		$hook = new Hook( $handle, $callback );
 		$hook->type( Hook::SHORTCODE );
 		return $hook;
 	}
@@ -120,21 +120,21 @@ class Hook_Factory {
 	 * Creates a shortcode.
 	 *
 	 * @param string $handle
-	 * @param callable $callable
-	 * @param boolean $private
-	 * @param boolean $public
+	 * @param callable $callback
+	 * @param boolean $public_ajax
+	 * @param boolean $private_ajax
 	 * @return Hook
 	 */
 	public function ajax(
 		string $handle,
-		callable $callable,
-		bool $public = true,
-		bool $private = true
+		callable $callback,
+		bool $public_ajax = true,
+		bool $private_ajax = true
 	): Hook {
-		$hook = new Hook( $handle, $callable );
+		$hook = new Hook( $handle, $callback );
 		$hook->type( Hook::AJAX );
-		$hook->ajax_private( $private );
-		$hook->ajax_public( $public );
+		$hook->ajax_private( $private_ajax );
+		$hook->ajax_public( $public_ajax );
 		return $hook;
 	}
 }

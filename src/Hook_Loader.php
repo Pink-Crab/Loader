@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace PinkCrab\Loader;
 
-use PinkCrab\Loader\{Hook,Hook_Factory,Hook_Collection,Hook_Manager};
+use PinkCrab\Loader\{Hook, Hook_Factory, Hook_Collection, Hook_Manager};
 
 class Hook_Loader {
 
@@ -182,12 +182,12 @@ class Hook_Loader {
 	 *
 	 * @param string $handle
 	 * @param callable $callback
-	 * @param boolean $public
-	 * @param boolean $private
+	 * @param boolean $public_ajax
+	 * @param boolean $private_ajax
 	 * @return Hook
 	 */
-	public function ajax( string $handle, callable $callback, bool $public = true, bool $private = true ): Hook {
-		$hook = $this->hook_factory->ajax( $handle, $callback, $public, $private );
+	public function ajax( string $handle, callable $callback, bool $public_ajax = true, bool $private_ajax = true ): Hook {
+		$hook = $this->hook_factory->ajax( $handle, $callback, $public_ajax, $private_ajax );
 		$this->hooks->push( $hook );
 		return $hook;
 	}
@@ -219,10 +219,9 @@ class Hook_Loader {
 		}
 
 		$this->hooks->register(
-			function( Hook $hook ) use ( $hook_manager ) {
+			function ( Hook $hook ) use ( $hook_manager ) {
 				$hook_manager->process_hook( $hook );
 			}
 		);
 	}
-
 }

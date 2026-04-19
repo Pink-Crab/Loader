@@ -39,5 +39,4 @@ class Loader extends Hook_Loader {
 	public static function boot(): self {
 		return new Loader();
 	}
-
 }

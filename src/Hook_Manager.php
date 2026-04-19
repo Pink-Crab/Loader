@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace PinkCrab\Loader;
 
 use InvalidArgumentException;
-use PinkCrab\Loader\{Hook,Hook_Removal};
+use PinkCrab\Loader\{Hook, Hook_Removal};
 use PinkCrab\Loader\Exceptions\Invalid_Hook_Callback_Exception;
 
 class Hook_Manager {
@@ -91,6 +91,7 @@ class Hook_Manager {
 	 */
 	protected function register_action( Hook $hook ): Hook {
 		if ( ! \is_callable( $hook->get_callback() ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
@@ -108,6 +109,7 @@ class Hook_Manager {
 	 */
 	protected function register_filter( Hook $hook ): Hook {
 		if ( ! \is_callable( $hook->get_callback() ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
@@ -131,6 +133,7 @@ class Hook_Manager {
 				$hook->get_priority()
 			) )->remove();
 		} catch ( InvalidArgumentException $th ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
@@ -147,6 +150,7 @@ class Hook_Manager {
 	 */
 	protected function register_ajax( Hook $hook ): Hook {
 		if ( ! \is_callable( $hook->get_callback() ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
@@ -173,14 +177,19 @@ class Hook_Manager {
 	 */
 	protected function register_shortcode( Hook $hook ): Hook {
 		if ( ! \is_callable( $hook->get_callback() ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
 			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
 		}
 
-		\add_shortcode( $hook->get_handle(), $hook->get_callback() );
+		$handle = $hook->get_handle();
+		if ( '' === $handle ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- exception message, not echoed.
+			throw Invalid_Hook_Callback_Exception::from_hook( $hook );
+		}
+
+		\add_shortcode( $handle, $hook->get_callback() );
 
 		$hook->registered();
 		return $hook;
 	}
-
-
 }
