@@ -55,15 +55,15 @@ class Hook_Collection implements Countable {
 	/**
 	 * Applies a function to all items in the collection.
 	 *
-	 * @param callable(Hook):void $function
+	 * @param callable(Hook):void $callback
 	 * @return void
 	 */
-	public function register( callable $function ): void {
+	public function register( callable $callback ): void {
 		// Filter the hooks, to add/amend filters.
 		$hooks = \apply_filters( self::REGISTER_HOOKS, $this->hooks );
 
 		foreach ( $hooks as $key => $hook ) {
-			$function( $hook );
+			$callback( $hook );
 
 			// If array key doesnt exist, then add to end.
 			if ( ! \array_key_exists( $key, $this->hooks ) ) {

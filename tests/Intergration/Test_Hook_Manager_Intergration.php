@@ -182,6 +182,16 @@ class Test_Hook_Manager_Intergration extends WP_UnitTestCase {
 		$manager->process_hook( $hook );
 	}
 
+	/** @testdox When an empty string handle is passed when registering a shortcode, an error should be thrown. */
+	public function test_throws_exception_with_empty_shortcode_handle(): void {
+		$this->expectException( Invalid_Hook_Callback_Exception::class );
+		$hook = new Hook( '', 'is_string' );
+		$hook->type( Hook::SHORTCODE );
+
+		$manager = new Hook_Manager();
+		$manager->process_hook( $hook );
+	}
+
 	/** @testdox When registering all hooks, the internal hook manager should be used unless otherwise defined. */
 	public function test_can_use_custom_hook_manager(): void {
 		$loader = new Hook_Loader;
